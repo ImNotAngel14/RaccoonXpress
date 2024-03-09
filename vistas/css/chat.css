@@ -1,0 +1,222 @@
+* {
+    box-sizing: border-box; /* Asegura que el padding y border estén incluidos en el ancho total del elemento */
+    margin: 0;
+    padding: 0;
+}
+
+.row {
+    --bs-gutter-x: 0rem !important;
+}
+
+body {
+    display: flex !important; 
+    flex-direction: column !important; 
+    margin: 0 !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+}
+
+/* NAVBAR */
+.navbar{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.contenedor_navbar{
+    background-color: #729740;
+}
+
+/* ---------CUERPO------------ */
+/* Barra Lateral */
+
+.cuerpo_chat_izquierda{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-right: 1px solid #CED4DA;
+}
+.barra_busqueda_chat{
+    width: 95%;
+}
+.barra_izquierda_chats{
+    margin-left: 0.25rem;
+    .recuadro_chat_barraizquierda{
+        padding: 0.5rem;
+        padding-left: 0 !important;
+        .usuario_barraizquierda{
+            h5{
+                margin-bottom: 0 !important;
+            }
+        }
+        .ultimo_mensaje{
+            color: rgb(112, 112, 112);
+            font-size: 0.9rem;
+        }
+        .imagen_usuario_barraizquierda{
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 1.5rem;
+        }
+        .recuadro_chat_info{
+            padding-left: 1.25rem;
+            .ultimo_mensaje{
+                .ultimo_mensaje_fechahora{
+                    margin-left: 0.75rem;
+                }
+            }
+        }
+        &:hover{
+            background-color: rgb(194, 194, 194);
+            border-radius: 0.5rem;
+        }
+    }
+    
+}
+.cuerpo_chat_derecha{
+    display: flex;
+    flex-direction: column;
+    min-height: 35rem; /* Asegúrate de que el contenedor tome todo el alto posible */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    .header_chat_derecha{
+        border-bottom: 1px solid #CED4DA;
+    }
+    /* .usuario_info_derecha{
+        margin-left: 1.25rem;
+    } */
+    .img_usuario_top_barraderecha{
+        margin-left: 1.5rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 1.75rem;
+    }
+    .dropdown{
+        font-size: 1.5rem;
+    }
+    .dropdown-toggle::after {
+        display: none;
+    }
+    .chats_container{
+        padding: 1rem;
+        flex-grow: 1; /* Esto hace que el chats_container crezca para ocupar el espacio disponible, empujando el input hacia abajo */
+    overflow-y: auto; /* Opcional: para hacer scroll dentro del contenedor si es necesario */
+    }
+}
+
+.mensaje_del_destinatario{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea el contenido al inicio */
+    p{
+        margin-bottom: 0 !important;
+    }
+    .cuerpo_mensaje_destinatario{
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+        background-color: lightblue;
+        p{
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+        }
+        box-sizing: content-box !important;
+    }
+    .mensaje_hora{
+    font-size: 0.9rem;
+    color: rgb(112, 112, 112);
+    }
+}
+
+.mensaje_del_remitente{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    p{
+        margin-bottom: 0 !important;
+    }
+    .cuerpo_mensaje_remitente{
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+        background-color: #d1d3d1;
+        p{
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+        }
+        box-sizing: content-box !important;
+    }
+    .mensaje_hora{
+    font-size: 0.9rem;
+    color: rgb(112, 112, 112);
+    }
+    .info_mensaje_remitente{
+        display: flex;
+        flex-direction: row;
+        .mensaje_visto{
+            padding-left: 0.5rem;
+            font-size: 0.9rem;
+            color: rgb(112, 112, 112);
+        }
+    }
+}
+
+.input_chat_wrapper{
+    margin-top: auto; /* Esto empujará el input_chat_container hacia abajo */
+    border-top: 1px solid #CED4DA;
+    padding-top: 0.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    .btn_mandar_mensaje{
+        margin-left: 0.5rem;
+        background-color: lightblue;
+        color: white;
+        font-weight: bold;
+    }
+    label{
+        button{
+            border: none;
+            background-color: transparent;
+            color: lightblue;
+        }
+    }
+}
+
+.btn_mandar_mensaje{
+display:none;
+}
+
+/* Barra Lateral */
+
+
+/* ---------CUERPO------------ */
+
+
+/* FOOTER */
+
+footer {
+    background-color: #729740;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    /* ajusta el ancho según sea necesario */
+    margin: 0 auto;
+    /* centra el contenido horizontalmente */
+}
+
+.footer-our-store,
+.footer-address {
+    width: 48%;
+    /* ajusta el ancho según sea necesario */
+}
+
+.footer-copyright {
+    width: 100%;
+    text-align: center;
+
+}
+

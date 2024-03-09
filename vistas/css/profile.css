@@ -1,0 +1,12 @@
+.information_area{
+    background-color: rgb(255, 255, 255);
+    padding-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.555);
+}
+
+.private_profile
+{
+    display: none;
+}

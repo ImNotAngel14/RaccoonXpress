@@ -1,0 +1,18 @@
+.btn_confirm
+{
+    background-color: rgb(230, 27, 27);
+    color:rgb(72, 116, 141);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.btn_confirm:hover
+{
+    background-color: rgb(76, 185, 218);
+    color:white;
+    filter: brightness(1.2);
+}
+
+.product-card
+{
+    background-color: rgba(255, 255, 255, 0.774);
+}
