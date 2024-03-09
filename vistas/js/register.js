@@ -1,28 +1,75 @@
 function validate()
 {
-    let element_password = document.getElementById('id_password');
-    let element_email = document.getElementById('id_email');
+    const element_password = document.getElementById('id_password');
+    const element_email = document.getElementById('id_email');
+    const element_username = document.getElementById('id_username');
     let password = element_password.value;
     let email = element_email.value;
-    if(!validatePassword(password))
+    let username = element_username.value;
+    let valid_input = true;
+    console.log(username.length);
+    if(username.length < 3)
     {
-        element_password.classList.add("is-invalid");
-        document.getElementById('id_pass_req').hidden = false;
-        return false;
+        element_username.classList.add('is-invalid');
+        document.getElementById('id_username_validation').hidden = false;
+        valid_input = false;
+        element_username.scrollIntoView({
+            behavior: 'smooth', // Puedes usar 'auto' o 'smooth' para especificar el comportamiento del desplazamiento
+            block: 'start', // Puedes usar 'start', 'center', 'end', o 'nearest' para especificar cómo el bloque debería alinearse
+            inline: 'nearest' // Puedes usar 'start', 'center', 'end', o 'nearest' para especificar cómo en línea debería alinearse
+        });
     }
-    document.getElementById('id_pass_req').hidden = true;
-    element_password.classList.remove("is-invalid");
+    else
+    {
+        element_username.classList.remove('is-invalid');
+        document.getElementById('id_username_validation').hidden = true;
+    }
+    
+
     if(!validateEmail(email))
     {
         element_email.classList.add("is-invalid");
-        document.getElementById('id_email_validation').hidden = false;
+        document.getElementById('id_email_validation2').hidden = false;
+        valid_input = false;
+        element_email.scrollIntoView({
+            behavior: 'smooth', // Puedes usar 'auto' o 'smooth' para especificar el comportamiento del desplazamiento
+            block: 'start', // Puedes usar 'start', 'center', 'end', o 'nearest' para especificar cómo el bloque debería alinearse
+            inline: 'nearest' // Puedes usar 'start', 'center', 'end', o 'nearest' para especificar cómo en línea debería alinearse
+        });
+    }
+    else
+    {
+        element_email.classList.remove("is-invalid");
+        document.getElementById('id_email_validation2').hidden = true;
+    }
+    
+
+    if(!validatePassword(password))
+    {
+        element_password.classList.add("is-invalid");
+        document.getElementById('id_pass_validation').hidden = false;
+        valid_input = false;
+        element_password.scrollIntoView({
+            behavior: 'smooth', // Puedes usar 'auto' o 'smooth' para especificar el comportamiento del desplazamiento
+            block: 'start', // Puedes usar 'start', 'center', 'end', o 'nearest' para especificar cómo el bloque debería alinearse
+            inline: 'nearest' // Puedes usar 'start', 'center', 'end', o 'nearest' para especificar cómo en línea debería alinearse
+        });
+    }
+    else
+    {
+        document.getElementById('id_pass_validation').hidden = true;
+        element_password.classList.remove("is-invalid");
+    }
+    
+    if(valid_input)
+    {
+        var saved = registerUser();
+        return saved;
+    }
+    else
+    {
         return false;
     }
-    element_email.classList.remove("is-invalid");
-    document.getElementById('id_email_validation').hidden = true;
-
-    var saved = registerUser();
-    return saved;
 }
 
 function validatePassword(pPassword) {

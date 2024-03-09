@@ -6,6 +6,7 @@
     <title>Registro de Usuario</title>
     <!-- Agregar referencia a Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="css/register.css">
+    <link rel="stylesheet" type="text/css" href="css/general.css">
     <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
 </head>
 <body style="background-color: rgb(223, 223, 223)">
@@ -23,18 +24,19 @@
                             <div class="form-group">
                                 <label for="id_email"></label>
                                 <input type="email" class="dato" id="id_email" name="name_email" placeholder="Correo" required>
-                                <p id="id_email_validation" style="color: red; font-weight: bold;" hidden>El correo electrónico ya está registrado.</p>
+                                <p id="id_email_validation" class="error_msg" hidden>El correo electrónico ya está registrado.</p>
+                                <p id="id_email_validation2" class="error_msg" hidden>Escriba un correo electronico válido.</p>
                             </div>
                             <div class="form-group">
                                 <label for="id_username"></label>
                                 <input type="text" class="dato" id="id_username" name="name_username" placeholder="Usuario" required>
-                                <p id="id_username_validation" style="color: red; font-weight: bold;" hidden>El nombre de usuario debe ser mayor a 3 letras.</p>
+                                <p id="id_username_validation" class="error_msg" hidden>El nombre de usuario debe ser mayor a 3 letras.</p>
                             </div>
                             <div class="form-group">
                                 <label for="id_password"></label>
                                 <input type="password" class="dato" id="id_password" placeholder="Contraseña" name="name_password" required>
                             </div>
-                            <div id="id_pass_req" hidden>
+                            <div id="id_pass_validation" class="error_msg" hidden>
                                 <p  >La contraseña debe contener lo siguiente:</p>
                                 <ul >
                                     <li id="id_req_length">8 caracteres</li>
