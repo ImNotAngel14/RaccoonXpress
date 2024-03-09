@@ -1,6 +1,6 @@
 
 .Contenedor{
-    background-color: #8EB25A;
+    background-color: lightblue;
     border-radius: 0.5rem;
     margin-bottom: 2.5rem;
 }
@@ -45,7 +45,7 @@ input[type="date"]::before {
     }
     input[type="date"]:focus,
     input[type="date"]:valid {
-        color: #8EB25A;
+        color: lightblue;
     }
     input[type="date"]:focus::before,
     input[type="date"]:valid::before {
@@ -83,7 +83,7 @@ select {
 
 /* Estilos cuando el select está enfocado */
 select:focus {
-    color: #8EB25A;
+    color: lightblue;
 }
 
 /* Estilos para las opciones cuando el select está enfocado */
@@ -129,7 +129,7 @@ select:focus option {
 }
 
 .dato:focus::placeholder {
-    color: #8EB25A;
+    color: lightblue;
 }
 
 option.opcion{
@@ -149,19 +149,19 @@ option.opcion{
 }
 
 #id_registerSubmit{
-    background-color: #8EB25A !important; 
+    background-color: lightskyblue !important; 
     color: #ffffff !important;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
 }
 
 #id_registerSubmit:hover{
     box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.555);
-    filter:brightness(1.2);
+    filter:brightness(1.1);
 
 }
 
 .link:hover{
     filter:brightness(1.5);
-    text-shadow: 1px 1px 1px rgba(148, 255, 145, 0.555);
+    text-shadow: 1px 1px 1px rgb(108, 194, 223);
 
 }
