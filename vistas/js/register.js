@@ -142,7 +142,7 @@ function registerUser()
         birthdate: cBirthdate,
         genre: cGenre
     };
-    xhr.open("POST", "./controller/signup.php", true);
+    xhr.open("POST", "../controller/signup.php", true);
     xhr.onreadystatechange = function () 
     {
         try

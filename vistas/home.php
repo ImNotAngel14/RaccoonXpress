@@ -83,19 +83,19 @@
                             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Perfil</a>
+                                        <a class="nav-link" aria-current="page" href="profile_client.html">Perfil</a>
                                     </li>
         
                                     <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Mis compras</a>
+                                        <a class="nav-link" aria-current="page" href="compras.html">Mis compras</a>
                                     </li>
         
                                     <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Mis listas</a>
+                                        <a class="nav-link" aria-current="page" href="listas.html">Mis listas</a>
                                     </li>
         
                                     <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Carrito de compras</a>
+                                        <a class="nav-link" aria-current="page" href="shopping_cart.html">Carrito de compras</a>
                                     </li>
                                 </ul>
                             </div>
