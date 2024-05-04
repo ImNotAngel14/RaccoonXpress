@@ -170,11 +170,12 @@
             <h5 class="modal-title" id="ModalmodifieLabel">Modificar Perfil</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        <form id="profile_form">
+        <form id="profile_form" enctype="multipart/form-data" method="post" onsubmit="return validate()">
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+                    <input type="text" class="form-control" id="id_username" name="username" placeholder="Nombre de usuario">
+                    <p id="id_username_validation" class="error_msg" hidden>El nombre de usuario debe ser mayor a 3 letras.</p>
                 </div>
                 <div class="mb-3">
                     <label for="realname" class="form-label">Nombre Completo</label>
@@ -186,16 +187,28 @@
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico">
+                    <input type="email" class="form-control" id="id_email" name="email" placeholder="Correo electrónico">
+                    <p id="id_email_validation" class="error_msg" hidden>El correo electrónico ya está registrado.</p>
+                    <p id="id_email_validation2" class="error_msg" hidden>Escriba un correo electronico válido.</p>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Nueva Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+                    <input type="password" class="form-control" id="id_password" name="password" placeholder="Contraseña">
                 </div>
-                <div class="mb-3">
+                <div id="id_pass_validation" class="error_msg" hidden>
+                    <p  >La contraseña debe contener lo siguiente:</p>
+                    <ul >
+                        <li id="id_req_length">8 caracteres</li>
+                        <li id="id_req_upper">Una mayúscula</li>
+                        <li id="id_req_lower">Una minúscula</li>
+                        <li id="id_req_number">Un número</li>
+                        <li id="id_req_special">Un carácter especial</li>
+                    </ul>
+                </div>
+                <!--div class="mb-3">
                     <label for="confirm_password" class="form-label">Confirmar Nueva contraseña</label>
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña">
-                </div>
+                    <input type="password" class="form-control" id="id_confirm_password" name="confirm_password" placeholder="Confirmar contraseña">
+                </div-->
 
             </div>
             <div class="modal-footer">
@@ -268,5 +281,6 @@
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/register.js"></script>
 </body>
 </html>
