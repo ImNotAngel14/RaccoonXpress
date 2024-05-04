@@ -63,7 +63,7 @@ function validate()
     
     if(valid_input)
     {
-        var saved = registerUser();
+        //var saved = registerUser();
         return saved;
     }
     else
