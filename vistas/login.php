@@ -26,7 +26,7 @@
             <button type="submit" class="btn btn_login">Ingresar</button>
             <br><br>
             <span>¿Aún no tienes una cuenta? &nbsp;</span>
-            <a href="register.html">Registrate Aquí</a>
+            <a href="register.php">Registrate Aquí</a>
         </form>
     </div>
 

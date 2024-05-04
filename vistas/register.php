@@ -90,7 +90,7 @@
                                 <button type="submit" class="btn" id="id_registerSubmit">Confirmar</button>
                                 <br>
                                 <p style="color: #494949;">¿Ya tienes una cuenta? &nbsp;</p>
-                                <span class="link"><a href="login.html" style="color: lightskyblue;">Inicia Sesión</a><span>
+                                <span class="link"><a href="login.php" style="color: lightskyblue;">Inicia Sesión</a><span>
                             </div>
                             
 

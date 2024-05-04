@@ -71,7 +71,7 @@
     <div class="container">
 
         <section class="cta">
-            <h2><a href="register.html" class="btn-cta">Registrate ahora</a></h2>
+            <h2><a href="register.php" class="btn-cta">Registrate ahora</a></h2>
             <p>Vive la experiencia completa</p>
         </section>
 
