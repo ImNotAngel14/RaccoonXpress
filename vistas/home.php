@@ -38,7 +38,8 @@
     // Cerrar la conexión
     $conexion->close();
 ?-->
-
+<?php
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
