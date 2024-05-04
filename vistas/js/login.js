@@ -10,7 +10,7 @@ function authLogin()
         username: cUsername.value.trim(),
         password: cPassword.value.trim()
     };
-    xhr.open("POST", "./controller/login.php", true);
+    xhr.open("POST", "./controlador/authLogin.php", true);
     xhr.onreadystatechange = function () 
     {
         try
@@ -25,7 +25,7 @@ function authLogin()
                     document.getElementById('id_login_validation').hidden = false;
                     return false;
                 }
-                window.location.replace("./index.html");
+                window.location.replace("./index.php");
                 authResult = true;
             }
         }catch(error)
