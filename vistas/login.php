@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="container mt-5 Contenedor">
-        <form class="col-md-10 offset-md-1" action="home.html" method="post" id="form_login" name="form_login" onsubmit="return authLogin()">
+        <form class="col-md-10 offset-md-1" method="post" id="form_login" name="form_login" onsubmit="return authLogin()">
             <h1 class="mb-4">Iniciar Sesión</h1>
             <span id="id_login_msg" class="error_msg" hidden>Credenciales incorrectas.</span>
             <div class="form-group">
@@ -31,7 +31,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="javascript/login.js"></script>
+    <script src="js/login.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

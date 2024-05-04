@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if(!isset($_SESSION["AUTH"])) {
     // No hay sesion iniciada}
     header("Location: ./vistas/landing_page.php");
-    //header("Location: ./vistas/home.php");
+    //
 } else {
-    
+    header("Location: ./vistas/home.php");
 }

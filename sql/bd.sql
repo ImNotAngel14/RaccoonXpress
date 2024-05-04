@@ -17,7 +17,7 @@ CREATE TABLE `users` (
     `email` varchar(32) NOT NULL COMMENT 'Dirección de correo electrónico',
     `fullname` varchar(255) DEFAULT NULL COMMENT 'Nombre completo del usuario',
     `birthdate` date DEFAULT NULL COMMENT 'Fecha de nacimiento del usuario',
-    `lastlogin` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Fecha y hora de creación de la cuenta',
+    `entry_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Fecha y hora de creación de la cuenta',
     `genre` tinyint(1) DEFAULT NULL COMMENT 'Indicador de género',
     `is_active` tinyint(1) DEFAULT NULL COMMENT 'Indicador de cuenta activa',
     `visibility` tinyint(1) DEFAULT NULL COMMENT 'Indicador de visibilidad',

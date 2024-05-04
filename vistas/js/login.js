@@ -1,6 +1,5 @@
 function authLogin()
 {
-    
     const cUsername = document.getElementById("username");
     const cPassword = document.getElementById("password");
     var authResult = false;
@@ -10,7 +9,7 @@ function authLogin()
         username: cUsername.value.trim(),
         password: cPassword.value.trim()
     };
-    xhr.open("POST", "./controlador/authLogin.php", true);
+    xhr.open("POST", "../controladores/authLogin.php", true);
     xhr.onreadystatechange = function () 
     {
         try
@@ -22,10 +21,10 @@ function authLogin()
                 if(res.success != true)
                 {
                     authResult = false;
-                    document.getElementById('id_login_validation').hidden = false;
+                    document.getElementById('id_login_msg').hidden = false;
                     return false;
                 }
-                window.location.replace("./index.php");
+                window.location.replace("../index.php");
                 authResult = true;
             }
         }catch(error)
