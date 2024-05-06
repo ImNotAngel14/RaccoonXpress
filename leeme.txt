@@ -1,0 +1,101 @@
+===================================================
+= Instrucciones de uso del proyecto con github y git.
+===================================================
+
+Git es una herramienta para versionamiento de proyectos, esto es muy util porque con git podemos
+guardar como un historial de versiones de nuestro proyecto y ver exactamente que lineas cambiaron
+entre versiones. En este archivo detallaré lo básico del uso de git. Sientete libre de compartirlo 
+cuando lo ocupes.
+
+= Principales usos de git
+
+-Guardar historial de versiones. Esto es util como un guardado de partida en un videojuego, usualmente
+guardas partida antes de eventos importantes por si las cosas van mal o si no quieres perder tu 
+progreso. Comandos relacionados: add, commit, status, push, pull.
+-Ramificaciones del programa. Las ramas(branch) sirven para trabajar un proyecto en diferentes direcciones
+sin alterar la una a la otra hasta que no se mezclen(merge). Por ejemplo, puede trabajar una el front 
+mientras otro compañero trabaja el backend. Y al final se puede mezclar con merge sin tener que estar 
+descargando los cambios del otro hasta que no quieran mezclar las ramas.
+
+
+
+===================================================
+== Clonar proyecto con Github
+===================================================
+
+== Consideraciones.
+Al clonar un proyecto con git este descargara una copia del proyecto(repositorio) creando una carpeta
+dentro la cual estará el proyecto. Por ejemplo, si estamos en la carpeta ficticia "/Web" y hacemos "git clone"
+dentro de esa carpeta, este comando creara una carpeta con el nombre del proyecto, dentro de la cual estará
+el verdadero proyecto con su carpeta "/.git". Esto es importante porque al ejecutar comandos de "git" debemos estar
+situados en la carpeta que contiene a la carpeta oculta "/.git"
+
+De no estar en la ubicación correcta recibiremos el error: 
+"fatal: not a git repository (or any of the parent directories): .git"
+
+== Procedimiento para clonar el repositorio
+
+(1.) Abrir cmd y situarse en la carpeta que va a contener la CARPETA (leer el apartado consideraciones) 
+del proyecto.
+(2.) Escribiremos el comando "git clone" (sin las comillas). Esto empezará un proceso de descarga.
+(3.)  Al finalizar el proceso de descarga deberemos abrir la carpeta del proyecto (repositorio) en el cmd para
+empezar a trabajar en el.
+      (3.1) Esto puede hacerse en una ventana cmd mediante el comando cd [nombre proyecto] (sin los corchetes). 
+      O abriendo directamente la carpeta y escribiendo en la barra de direccion de la carpeta "cmd".
+
+Y listo ya podrías trabajar tu proyecto de git con esta ventana de comandos (cmd). No pasa nada si la cierras ahora, 
+repite el paso 3.1 para volver a abrir el cmd para tu proyecto de git cuando ocupes trabajar en el.
+
+
+
+===================================================
+== Guardar cambios en git
+===================================================
+¿Cuándo guardar una versión del proyecto? Como mencione anteriormente, git es una herramienta para versionamiento
+de proyectos, lo que quiere decir que podemos guardar cada cambio que hagamos como un historial de movimientos en 
+las lineas de cada archivo. Por eso es importante hacer un guardado en nuestro proyecto con git cuando hayamos 
+terminado alguna función o característica importante del proyecto, ya sea completar el login, el register o incluso 
+si nos preocupa cometer algún error que destruya el proyecto con lo que cambiaremos.
+
+= Procedimiento
+
+(1.) "git status": es importante revisar la rama en la que estamos y el estado de los cambios que hemos hecho para 
+verificar que tenemos cosas para guardar
+(2.) "git add [archivos a guardar o usar el caracter '.' para seleccionar todos los archivos]" (sin los '[', ']').
+(3.) "git commit -m "[Comentario describiendo los cambios]" (sin los '[', ']').
+    (3.1) Recomendacion, en el comentario coloca la accion que se hizo en la version, como "Agrega campo usuario", 
+    "arregla bug de...", etc. No influye en su funcionamiento pero sirve cuando buscas exactamente regresar a una
+    version anterior.
+
+
+
+
+===================================================
+= Extra: Subir tus cambios a la github, bitbucket o cualquier otro sitio del estilo. 
+===================================================
+
+No es el procedimiento sino una explicación de los comandos.
+
+Si ya tienes vinculado el proyecto con el repositorio (que lo hayas clonado con git clone o que ya hayas 
+hecho un "git remote add origin [link del repositorio.git]".
+
+    - "git push": Este comando cargara los commits a tu repositorio en linea, por ejemplo github.
+    - "git pull": Este comando descargará los cambios que se hayan hecho a tu rama desde el repositorio en linea.
+
+Si no tienes vinculado el proyecto con el repositorio en linea, es decir no es un repositorio que hayas clonado o
+que es un repositorio que quieras crear apenas en linea. Debes inicializar un nuevo repositorio en el sitio que hayas
+elegido, para simplificar ejemplificare con Github. 
+  En Github seleccionas "New" para crear un nuevo repositorio, en esta ventana ingresaras el nombre de tu repositorio
+(no necesita ser uno en especifico, sino que es para diferenciarlo en tus repositorios o sólo si lo haces publico 
+debería ser unico), la privacidad del repositorio, así como algunas opciones como agregar un archivo readme, etc. Estas
+ultimas no son necesarias puedes desmarcarlas. 
+  Una vez que ya se haya creado el repositorio te apareceran instrucciones de como vincularlo. En el caso de github hay 
+que ejecutar estos comandos git en tu proyecto (abriendo un cmd).
+
+  - "git remote add origin [link del repositorio.git]" debe ser el link que termina en ".git"
+  - "git branch -M main"
+  - "git push -u origin main"
+
+De cualquier forma puedes directamente copiar desde github los comandos con el botón que aparece ahí mismo y pegarlo en 
+cmd directo para que vincule los repositorios.
+  Y listo, ya estaría vinculado tu proyecto con tu repositorio en linea.
