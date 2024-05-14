@@ -7,7 +7,6 @@ function validate()
     let email = element_email.value;
     let username = element_username.value;
     let valid_input = true;
-    console.log(username.length);
     if(username.length < 3)
     {
         element_username.classList.add('is-invalid');
@@ -63,7 +62,7 @@ function validate()
     
     if(valid_input)
     {
-        //var saved = registerUser();
+        var saved = registerUser();
         return saved;
     }
     else
@@ -125,24 +124,28 @@ function validateEmail(pEmail)
 
 function registerUser()
 {
-    const cPassword = document.getElementById("id_password");
     const cEmail = document.getElementById("id_email");
+    const cUsername = document.getElementById("id_username");
+    const cPassword = document.getElementById("id_password");
     const cName = document.getElementById("id_name");
     const cLastName = document.getElementById("id_lastname");
     const cBirthdate = document.getElementById("id_birthdate").value;
-    const cGenre = document.getElementById("id_genre").value;
+    const cGender = document.getElementById("id_genre").value;
+    const cRole = document.getElementById("id_role").value;
     var authResult = false;
     let xhr = new XMLHttpRequest();
     const user = 
     {
+        username: cUsername.value,
         password: cPassword.value,
         email: cEmail.value,
         name: cName.value,
         lastname: cLastName.value,
         birthdate: cBirthdate,
-        genre: cGenre
+        gender: cGender,
+        role: cRole
     };
-    xhr.open("POST", "../controller/signup.php", true);
+    xhr.open("POST", "../controladores/registerUser.php", true);
     xhr.onreadystatechange = function () 
     {
         try
@@ -156,7 +159,7 @@ function registerUser()
                     return;
                 }
                 alert("Para finalizar tu registro completo es necesario que ingreses a tu cuenta, seccion de direcciones y agregues una dirección");
-                window.location.replace("./login.html");
+                window.location.replace("./login.php");
                 authResult = true;
             }
         }catch(error)

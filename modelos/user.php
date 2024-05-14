@@ -1,7 +1,7 @@
 <?php
 class User
 {
-    private $id_user;
+    private $user_id;
     private $email;
     private $username;
     private $password;
@@ -13,7 +13,7 @@ class User
     private $entry_date;
 
     public function __construct(
-        $id_user,
+        $user_id,
         $email,
         $username,
         $password,
@@ -24,7 +24,7 @@ class User
         $user_role,
         $entry_date
     ) {
-        $this->id_user = $id_user;
+        $this->user_id = $user_id;
         $this->email = $email;
         $this->username = $username;
         $this->password = $password;
@@ -38,12 +38,12 @@ class User
 
     public function getIdUser()
     {
-        return $this->id_user;
+        return $this->user_id;
     }
 
-    public function setIdUser($id_user)
+    public function setIdUser($user_id)
     {
-        $this->id_user = $id_user;
+        $this->user_id = $user_id;
     }
 
     public function getEmail()
@@ -138,7 +138,7 @@ class User
 
     static public function parseJson($json) {
         $user = new User(
-            isset($json["id_user"]) ? $json["id_user"] : "",
+            isset($json["user_id"]) ? $json["user_id"] : "",
             isset($json["email"]) ? $json["email"] : "",
             isset($json["username"]) ? $json["username"] : "",
             isset($json["user_password"]) ? $json["user_password"] : "",
@@ -154,7 +154,7 @@ class User
 
     public static function AuthenticateUser($mysqli, $username, $password)
     {
-        $sql = "SELECT id_user, username, user_role FROM users WHERE username = ? AND user_password = ? LIMIT 1;";
+        $sql = "SELECT user_id, username, user_role FROM users WHERE username = ? AND user_password = ? LIMIT 1;";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ss",$username, $password);
         $stmt->execute();
@@ -166,30 +166,47 @@ class User
     public static function SaveUser(
         $mysqli,
         $_username, 
-        $_password, 
+        $_user_password, 
         $_email,
         $_fullname,
         $_birthdate,
         $_gender,
-        $_user_rol,
+        $_is_active,
+        $_visibility,
+        $_user_role,
         $_profile_image
     )
     {
-        $sql = "INSERT INTO `users`( `email`, `username`, `user_password`, `fullname`, `birthdate`, `gender`, `user_role`, `profile_image`) VALUES (?,?,?,?,?,?,?,?,?);";
+        $sql = "CALL
+        raccoonxpress.sp_register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        /*
+        username,
+        user_password,
+        email,
+        fullname,
+        birthdate,
+        gender,
+        is_active,
+        visibility,
+        user_role,
+        profile_image
+        */
         try
         {
             $stmt = $mysqli->prepare($sql);
 
             $stmt->bind_param
             (
-                "sssssiis",
-                $_email,
+                "sssssiiiis",
                 $_username,
-                $_password,
+                $_user_password,
+                $_email,
                 $_fullname,
                 $_birthdate,
                 $_gender,
-                $_user_rol,
+                $_is_active,
+                $_visibility,
+                $_user_role,
                 $_profile_image
             );
             $stmt->execute();

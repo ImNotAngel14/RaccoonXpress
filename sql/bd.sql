@@ -11,49 +11,49 @@ Total float COMMENT 'Monto total asociado al Método de Pago'
 );
 
 CREATE TABLE `users` (
-    `id_user` int(11) NOT NULL COMMENT 'Id de cada usuario',
+    `user_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Id de cada usuario',
     `username` varchar(32) NOT NULL COMMENT 'nombre para el usuario en el aplicativo',
     `user_password` varchar(32) NOT NULL COMMENT 'Contraseña del usuario',
-    `email` varchar(32) NOT NULL COMMENT 'Dirección de correo electrónico',
+    `email` varchar(64) NOT NULL COMMENT 'Dirección de correo electrónico',
     `fullname` varchar(255) DEFAULT NULL COMMENT 'Nombre completo del usuario',
     `birthdate` date DEFAULT NULL COMMENT 'Fecha de nacimiento del usuario',
     `entry_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Fecha y hora de creación de la cuenta',
-    `genre` tinyint(1) DEFAULT NULL COMMENT 'Indicador de género',
+    `gender` tinyint(1) DEFAULT NULL COMMENT 'Indicador de género',
     `is_active` tinyint(1) DEFAULT NULL COMMENT 'Indicador de cuenta activa',
     `visibility` tinyint(1) DEFAULT NULL COMMENT 'Indicador de visibilidad',
-    `user_role` tinyint(1) NOT NULL COMMENT `Rol del usuario`,
+    `user_role` tinyint(1) NOT NULL COMMENT 'Rol del usuario',
     `profile_image` blob DEFAULT NULL COMMENT 'Imagen perfil'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE Productos
+CREATE TABLE `products`
 (
-    ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto',
-    Nombre varchar(255) COMMENT 'Nombre del Producto',
-    Descripcion varchar(255) COMMENT 'Descripción del Producto',
-    TipoVenta boolean COMMENT 'Tipo de Venta (true/false)',
-    Precio float COMMENT 'Precio del Producto',
-    CantidadDisponible int COMMENT 'Cantidad Disponible del Producto',
-    Aprobacion boolean COMMENT 'Aprobación del Producto (true/false)',
-    imagen1 blob COMMENT 'Imagen 1 relacionada con el Producto',
-    imagen2 blob COMMENT 'Imagen 2 relacionada con el Producto',
-    imagen3 blob COMMENT 'Imagen 3 relacionada con el Producto',
-    video longblob COMMENT 'Video relacionado con el Producto',
-    ID_Categoria int COMMENT 'ID de la Categoría a la que pertenece el Producto',
-    ID_Vendedor int COMMENT 'ID del Usuario que vende el Producto',
-    ID_AdminAprov int COMMENT 'ID del Administrador que aprobó el Producto',
-    FOREIGN KEY (ID_Categoria) REFERENCES Categorias (ID),
-	FOREIGN KEY (ID_Vendedor) REFERENCES Usuarios (ID),
-    FOREIGN KEY (ID_AdminAprov) REFERENCES Usuarios (ID)
-);
+    `product_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto',
+    `name` varchar(255) COMMENT 'Nombre del Producto',
+    `description` varchar(255) COMMENT 'Descripción del Producto',
+    `quotable` boolean COMMENT 'Tipo de Venta (true/false)',
+    `price` float COMMENT 'Precio del Producto',
+    `quantity` int COMMENT 'Cantidad Disponible del Producto',
+    `approved` boolean COMMENT 'Aprobación del Producto (true/false)',
+    `image1` blob COMMENT 'Imagen 1 relacionada con el Producto',
+    `image2` blob COMMENT 'Imagen 2 relacionada con el Producto',
+    `image3` blob COMMENT 'Imagen 3 relacionada con el Producto',
+    `video` longblob COMMENT 'Video relacionado con el Producto',
+    `category_id` int COMMENT 'ID de la Categoría a la que pertenece el Producto',
+    `seller_id` int COMMENT 'ID del Usuario que vende el Producto',
+    `admin_approval_id` int COMMENT 'ID del Administrador que aprobó el Producto',
+    FOREIGN KEY (category_id) REFERENCES `categorys` (ID),
+	FOREIGN KEY (seller_id) REFERENCES `users` (user_id),
+    FOREIGN KEY (admin_approval_id) REFERENCES `users` (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE Categorias
+CREATE TABLE `categorys`
 (
-    ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Categoría',
-    Nombre varchar(255) COMMENT 'Nombre de la Categoría',
-    Descripcion varchar(255) COMMENT 'Descripción de la Categoría',
-    ID_Usuario int NOT NULL COMMENT 'ID del Usuario que creó la Categoría',
-    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
-);
+    `category_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Categoría',
+    `category` varchar(255) COMMENT 'Nombre de la Categoría',
+    `description` varchar(255) COMMENT 'Descripción de la Categoría',
+    `user_id` int NOT NULL COMMENT 'ID del Usuario que creó la Categoría',
+    FOREIGN KEY (user_id) REFERENCES `users` (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE Reseñas
 (
