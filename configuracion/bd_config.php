@@ -1,5 +1,7 @@
 <?php
    class db {
+      
+      //Conexion de la base de datos
       static public function connect() {
          $host = "localhost";
          $db = "raccoonxpress";
@@ -19,6 +21,12 @@
          }
          return $mysqli;
       }
-      
+
+      // Desconexion de la base de datos
+      static public function disconnect($mysqli) {
+         if ($mysqli instanceof mysqli) {
+            $mysqli->close();
+         }
+      }
    }
 ?>

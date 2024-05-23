@@ -10,6 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mysqli = db::connect();
 
     $user = User::AuthenticateUser($mysqli, $json["username"], $json["password"]);
+    db::disconnect($mysqli);
     $json_response = ["success" => false];
     if($user)
     {

@@ -2,13 +2,10 @@
 --  Usuarios, Productos, Listas, Categorias, Productos_Lista, Compras
 --  Metodo_Pago, Sala_Chat, Mensajes, Reseñas.
 --  Carrito, Productos_Carrito
-
-CREATE TABLE Metodo_Pago
-(
-ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de cada Método de Pago',
-Metodo varchar(50) COMMENT 'Nombre o tipo de Método de Pago',
-Total float COMMENT 'Monto total asociado al Método de Pago'
-);
+DROP TABLE `product_categorys`;
+DROP TABLE `products`;
+DROP TABLE `categorys`;
+DROP TABLE `users`;
 
 CREATE TABLE `users` (
     `user_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Id de cada usuario',
@@ -22,7 +19,7 @@ CREATE TABLE `users` (
     `is_active` tinyint(1) DEFAULT NULL COMMENT 'Indicador de cuenta activa',
     `visibility` tinyint(1) DEFAULT NULL COMMENT 'Indicador de visibilidad',
     `user_role` tinyint(1) NOT NULL COMMENT 'Rol del usuario',
-    `profile_image` longblob DEFAULT NULL COMMENT 'Imagen perfil'
+    `profile_image` mediumblob DEFAULT NULL COMMENT 'Imagen perfil'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `categorys`
@@ -39,14 +36,14 @@ CREATE TABLE `products`
     `product_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto',
     `name` varchar(255) COMMENT 'Nombre del Producto',
     `description` varchar(255) COMMENT 'Descripción del Producto',
-    `quotable` boolean COMMENT 'Tipo de Venta (true/false)',
+    `quotable` tinyint COMMENT 'Tipo de Venta (true/false)',
     `price` float COMMENT 'Precio del Producto',
     `quantity` int COMMENT 'Cantidad Disponible del Producto',
     `approved` boolean COMMENT 'Aprobación del Producto (true/false)',
-    `image1` blob COMMENT 'Imagen 1 relacionada con el Producto',
-    `image2` blob COMMENT 'Imagen 2 relacionada con el Producto',
-    `image3` blob COMMENT 'Imagen 3 relacionada con el Producto',
-    `video` longblob COMMENT 'Video relacionado con el Producto',
+    `image1` mediumblob COMMENT 'Imagen 1 relacionada con el Producto',
+    `image2` mediumblob COMMENT 'Imagen 2 relacionada con el Producto',
+    `image3` mediumblob COMMENT 'Imagen 3 relacionada con el Producto',
+    `video` mediumblob COMMENT 'Video relacionado con el Producto',
     -- `category_id` int COMMENT 'ID de la Categoría a la que pertenece el Producto',
     `seller_id` int COMMENT 'ID del Usuario que vende el Producto',
     `admin_approval_id` int COMMENT 'ID del Administrador que aprobó el Producto',
@@ -62,6 +59,13 @@ CREATE TABLE `product_categorys`
     FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`),
     FOREIGN KEY (`category_id`) REFERENCES `categorys`(`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE Metodo_Pago
+(
+ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de cada Método de Pago',
+Metodo varchar(50) COMMENT 'Nombre o tipo de Método de Pago',
+Total float COMMENT 'Monto total asociado al Método de Pago'
+);
 
 CREATE TABLE Reseñas
 (

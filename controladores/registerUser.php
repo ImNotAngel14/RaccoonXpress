@@ -34,6 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     user_role,
     profile_image
     */
+    db::disconnect($mysqli);
     $json_response = ["success" => true];
     echo json_encode($json_response);
     exit;
