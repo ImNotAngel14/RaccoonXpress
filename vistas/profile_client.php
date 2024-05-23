@@ -98,7 +98,7 @@
                                     <h5 class="mt-2" >Fecha Nacimiento : </h5><h5 class="mt-2"> 01-Ene-02</h5>
                                 </div>
                             </div>
-                            <div class="position-absolute bottom-0 end-0">
+                            <div class="position-absolute bottom-0 end-0 p-4">
                                 <button id="id_sign_off" class="btn btn btn-secondary" style="border: #ced4da;">
                                     Cerrar Sesión
                                 </button>
