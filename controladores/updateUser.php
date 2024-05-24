@@ -8,22 +8,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     header('Content-Type: application/json');
     $mysqli = db::connect();
-
-    $success = User::SaveUser(
-        $mysqli, 
+    session_start();
+    $user_id = $_SESSION['AUTH'];
+    $success = User::UpdateUser(
+        $mysqli,
+        $user_id,
         $json["username"], 
         $json["password"],
         $json["email"],
-        $json["name"] . " " . $json["lastname"],
+        $json["name"],
         $json["birthdate"],
         $json["gender"],
-        1,
-        1,
-        $json["role"],
-        $json["profileImage"],
+        $json["visibility"],
+        $json["profileImage"]
     );
     db::disconnect($mysqli);
-    $json_response = ["success" => $success];
+    $json_response = ["success" => $success, "user_id" => $user_id, "imagen" => $json["profileImage"]];
     echo json_encode($json_response);
     exit;
 }

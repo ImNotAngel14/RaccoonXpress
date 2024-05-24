@@ -132,6 +132,8 @@ function registerUser()
     const cBirthdate = document.getElementById("id_birthdate").value;
     const cGender = document.getElementById("id_genre").value;
     const cRole = document.getElementById("id_role").value;
+    const cImage = document.getElementById("id_input_img").inputFile.files[0];
+    
     var authResult = false;
     let xhr = new XMLHttpRequest();
     const user = 
@@ -143,7 +145,8 @@ function registerUser()
         lastname: cLastName.value,
         birthdate: cBirthdate,
         gender: cGender,
-        role: cRole
+        role: cRole,
+        profileImage: cImage
     };
     xhr.open("POST", "../controladores/registerUser.php", true);
     xhr.onreadystatechange = function () 

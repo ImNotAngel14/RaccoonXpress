@@ -1,10 +1,10 @@
 <?php
-function printNavbar()
+function printNavbar($user_id)
 {
     echo "
     <div class='row align-items-center general_navbar py-1'>
         <div class='col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block'>
-            <a class='navbar-brand d-flex justify-content-center' href='#'>
+            <a class='navbar-brand d-flex justify-content-center' href='../index.php'>
                 <img src='images/Imagotipo.png' alt='' height='30 rem'>
             </a>
         </div>
@@ -32,7 +32,7 @@ function printNavbar()
                         <div class='collapse navbar-collapse' id='navbarNavDropdown'>
                             <ul class='navbar-nav'>
                                 <li class='nav-item'>
-                                    <a class='nav-link' aria-current='page' href='profileRedirection.php'>Perfil</a>
+                                    <a class='nav-link' aria-current='page' href='profileRedirection.php?profile=". $user_id . "'>Perfil</a>
                                 </li>
     
                                 <li class='nav-item'>

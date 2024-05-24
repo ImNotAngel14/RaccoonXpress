@@ -7,7 +7,7 @@
     if(isset($_SESSION['AUTH']))
     {
         // Sesion iniciada
-        $id_user = $_SESSION['AUTH'];
+        $user_id = $_SESSION['AUTH'];
     }
     else
     {
@@ -52,7 +52,7 @@
     </head>
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
         <?php
-            printNavbar();
+            printNavbar($user_id);
         ?>
         <div class="container mt-5">
             <div class="row">

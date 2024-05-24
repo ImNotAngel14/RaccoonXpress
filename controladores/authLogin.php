@@ -18,6 +18,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         session_start();
         $_SESSION["AUTH"] = (string)$user->getIdUser();
         $_SESSION["ROLE"] = (string)$user->getUserRol();
+        $json_response["user_id"] = $_SESSION['AUTH'];
         echo json_encode($json_response);
         exit;
     } 

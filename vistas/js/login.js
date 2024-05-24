@@ -1,37 +1,32 @@
-function authLogin()
+async function authLogin()
 {
-    const cUsername = document.getElementById("username");
-    const cPassword = document.getElementById("password");
-    var authResult = false;
-    let xhr = new XMLHttpRequest();
-    const user = 
-    {
-        username: cUsername.value.trim(),
-        password: cPassword.value.trim()
-    };
-    xhr.open("POST", "../controladores/authLogin.php", true);
-    xhr.onreadystatechange = function () 
-    {
-        try
+    event.preventDefault();
+    const cUsername = document.getElementById("username").value;
+    const cPassword = document.getElementById("password").value;
+    try {
+        const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/authLogin.php', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: cUsername, password: cPassword})
+        });
+        // Actuamos en base a la respuesta de la API
+        const data = await response.json();
+        if(data.success)
         {
-            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200)
-            {
-                console.log(xhr.response);
-                let res = JSON.parse(xhr.response);
-                if(res.success != true)
-                {
-                    authResult = false;
-                    document.getElementById('id_login_msg').hidden = false;
-                    return false;
-                }
-                window.location.replace("../index.php");
-                authResult = true;
-            }
-        }catch(error)
-        {
-            console.error(xhr.response);
+            console.log("success");
+            window.location.replace("../index.php");
+            return true;
+            
         }
+        else
+        {
+            document.getElementById('id_login_msg').hidden = false;
+            return false;
+        }
+    } catch (error) {
+        console.error('Error al llamar a la API:', error); 
     }
-    xhr.send(JSON.stringify(user));
-    return authResult;
+    return false;
 }

@@ -163,6 +163,69 @@ class User
         return $user ? User::parseJson($user) : NULL;
     }
 
+    public static function UpdateUser(
+        $mysqli,
+        $_user_id,
+        $_username, 
+        $_user_password, 
+        $_email,
+        $_fullname,
+        $_birthdate,
+        $_gender,
+        $_visibility,
+        $_profile_image
+        )
+    {
+        $success = true;
+        $sql = "
+        UPDATE raccoonxpress.`users` 
+        SET
+        `username` = ?,
+        `user_password` = ?,
+        `email` = ?,
+        `fullname` = ?,
+        `birthdate` = ?,
+        `gender` = ?,
+        `visibility` = ?,
+        `profile_image` = ? 
+        WHERE `user_id`=?;
+        ";
+        try
+        {
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param
+            (
+                "sssssiisi",
+                $_username,
+                $_user_password,
+                $_email,
+                $_fullname,
+                $_birthdate,
+                $_gender,
+                $_visibility,
+                $_profile_image,
+                $_user_id
+            );
+            $stmt->execute();
+            $success = true;
+        }
+        catch(mysqli_sql_exception $e)
+        {
+            // Verificar si el error es debido a una clave única duplicada
+            if ($e->getCode() === 1062) 
+            {
+                echo "Error: El correo electrónico ya existe en la base de datos.";
+            } 
+            else 
+            {
+                // Manejar otros errores si es necesario
+                echo "Error al insertar el registro: " . $e->getMessage();
+            }
+            $success = false;
+        }
+        return $success;
+    }
+
     public static function SaveUser(
         $mysqli,
         $_username, 
@@ -179,18 +242,6 @@ class User
     {
         $sql = "CALL
         raccoonxpress.sp_register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        /*
-        username,
-        user_password,
-        email,
-        fullname,
-        birthdate,
-        gender,
-        is_active,
-        visibility,
-        user_role,
-        profile_image
-        */
         try
         {
             $stmt = $mysqli->prepare($sql);
@@ -210,6 +261,7 @@ class User
                 $_profile_image
             );
             $stmt->execute();
+            
         }
         catch(mysqli_sql_exception $e)
         {
