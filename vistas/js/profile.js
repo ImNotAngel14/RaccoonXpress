@@ -3,6 +3,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
     button.addEventListener('click', function() {
         window.location.replace("./logout.php");
     });
+    const deleteButton = document.getElementById('id_btn_delete_user');
+    deleteButton.addEventListener('click', async function() {
+        try {
+            const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/deleteUser.php', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            // Actuamos en base a la respuesta de la API
+            const data = await response.json();
+            if(data.success)
+            {
+                window.location.replace("../index.php");
+            }
+            else
+            {
+                console.error("No se pudo registrar al usuario.");
+            }
+        } catch (error) {
+            console.error('Error al llamar a la API:', error);
+        };
+    });
 });
 
 function validate()
@@ -147,11 +171,11 @@ async function updateUser()
     const cBirthdate = document.getElementById("id_birthdate").value;
     const cProfileImage = document.getElementById("id_profileImage").files[0];
     const cGender = document.getElementById("id_gender").value;
-    const cVisbility = document.getElementById("id_visibility").value;
+    const cVisbility = document.getElementById("id_visibility").checked;
     const base64Image = await toBase64(cProfileImage);
     try {
         const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/updateUser.php', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
             'Content-Type': 'application/json'
             },
@@ -170,18 +194,14 @@ async function updateUser()
         const data = await response.json();
         if(data.success)
         {
-            console.log(data);
-            alert("Soy un breakpoint");
-            //window.location.reload();
         }
         else
         {
-            // Mostrar mensaje de error del registro
-            // ...
             console.error("No se pudo registrar al usuario.");
+            return false;
         }
     } catch (error) {
         console.error('Error al llamar a la API:', error);
     }
-    return false;
+    return true;
 }

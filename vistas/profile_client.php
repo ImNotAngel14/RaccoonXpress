@@ -83,7 +83,7 @@
                                     
                                     //echo "data:image/png;base64," . base64_encode($row['profile_image']);
                                     echo isset($row['profile_image']) ?
-                                    "data:image/png;base64," . base64_encode($row['profile_image']) : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
+                                    "data:image/png;base64," . $row['profile_image'] : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
                                     <input type="file" id="id_input_img" style="display:none;" onchange="previewImg()" accept="image/*">
                                     <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
                                 </label>
@@ -224,7 +224,7 @@
                     <input type="checkbox" id="id_visibility" name="visibility" 
                     <?php 
                         if($row['visibility'])
-                            echo "checked";
+                            echo " checked ";
                         else
                             echo "";
                     ?>
@@ -272,7 +272,7 @@
                 <br>
                 <div class=" text-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Aceptar</button>
+                    <button type="button" class="btn btn-primary" id="id_btn_delete_user">Aceptar</button>
                 </div>
             </div>
         </div>

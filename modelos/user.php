@@ -283,5 +283,31 @@ class User
         }
         return true;
     }
+
+    public static function DeleteUser($mysqli, $user_id)
+    {
+        $sql = "DELETE FROM `users` WHERE user_id = ?";
+        try
+        {
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param
+            (
+                "i",
+                $user_id
+            );
+            $stmt->execute();
+            
+        }
+        catch(mysqli_sql_exception $e)
+        {
+            echo "Error al insertar el registro: " . $e->getMessage();
+            return false;
+        }
+        finally
+        {
+            $stmt->close();
+        }
+        return true;
+    }
 }
 ?>

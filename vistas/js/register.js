@@ -1,5 +1,6 @@
 function validate()
 {
+    event.preventDefault();
     const element_password = document.getElementById('id_password');
     const element_email = document.getElementById('id_email');
     const element_username = document.getElementById('id_username');
@@ -121,8 +122,16 @@ function validateEmail(pEmail)
     return pattern.test(pEmail);
 }
 
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
 
-function registerUser()
+async function registerUser()
 {
     const cEmail = document.getElementById("id_email");
     const cUsername = document.getElementById("id_username");
@@ -132,8 +141,9 @@ function registerUser()
     const cBirthdate = document.getElementById("id_birthdate").value;
     const cGender = document.getElementById("id_genre").value;
     const cRole = document.getElementById("id_role").value;
-    const cImage = document.getElementById("id_input_img").inputFile.files[0];
-    
+    const cImage = document.getElementById("id_input_img").files[0];
+    const base64Image = await toBase64(cImage);
+    console.log(base64Image);
     var authResult = false;
     let xhr = new XMLHttpRequest();
     const user = 
@@ -146,7 +156,7 @@ function registerUser()
         birthdate: cBirthdate,
         gender: cGender,
         role: cRole,
-        profileImage: cImage
+        profileImage: base64Image.substring(22)
     };
     xhr.open("POST", "../controladores/registerUser.php", true);
     xhr.onreadystatechange = function () 

@@ -1,6 +1,6 @@
 <?php
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'PUT') {
     require_once '../modelos/user.php';
     require_once '../configuracion/bd_config.php';
 
