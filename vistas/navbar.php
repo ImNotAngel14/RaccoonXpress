@@ -40,11 +40,11 @@ function printNavbar($user_id)
                                 </li>
     
                                 <li class='nav-item' id='wishLists'>
-                                    <a class='nav-link' aria-current='page' href='#'>Mis listas</a>
+                                    <a class='nav-link' aria-current='page' href='lists.php'>Mis listas</a>
                                 </li>
     
                                 <li class='nav-item' id='shoppingCart'>
-                                    <a class='nav-link' aria-current='page' href='#'>Carrito de compras</a>
+                                    <a class='nav-link' aria-current='page' href='shopping_cart.php'>Carrito de compras</a>
                                 </li>
                             </ul>
                         </div>

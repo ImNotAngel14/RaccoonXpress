@@ -58,7 +58,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
     <div class="container-fluid">
         <!-- NAVBAR -->
         <?php
@@ -173,7 +173,7 @@
             <h5 class="modal-title" id="ModalmodifieLabel">Modificar Perfil</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        <form id="profile_form" enctype="multipart/form-data" method="post" onsubmit="return validate()">
+        <form id="profile_form" enctype="multipart/form-data" method="post" onsubmit="return createList()">
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de usuario</label>

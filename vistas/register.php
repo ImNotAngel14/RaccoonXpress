@@ -22,6 +22,17 @@
                             <h1 class="mb-4 text-center" style="color:#494949;">Crea una cuenta nueva</h1>
                             <h3 class="mb-4 text-center" style="color:lightblue;">Ingresa tus datos</h3>
                             <div class="form-group">
+                                <br>
+                                <h5 class="dato_noinput">
+                                    Imagen de perfil
+                                </h5>
+                                <label for="id_input_img">
+                                    <img id="id_profile_img" src="images/Profile.bmp" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
+                                    <input type="file" id="id_input_img" style="display:none;" onchange="loadImg()" accept="image/*">
+                                    <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
+                                </label>
+                            </div>
+                            <div class="form-group">
                                 <label for="id_email"></label>
                                 <input type="email" class="dato" id="id_email" name="name_email" placeholder="Correo" required>
                                 <p id="id_email_validation" class="error_msg" hidden>El correo electrónico ya está registrado.</p>
@@ -73,17 +84,6 @@
                                     <option value="0" class="opcion">Comprador</option>
                                     <option value="1" class="opcion">Vendedor</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <br>
-                                <h5 class="dato_noinput">
-                                    Imagen de perfil
-                                </h5>
-                                <label for="id_input_img">
-                                    <img id="id_profile_img" src="images/Profile.bmp" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
-                                    <input type="file" id="id_input_img" style="display:none;" onchange="loadImg()" accept="image/*">
-                                    <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
-                                </label>
                             </div>
                             <br>
                             <div class="d-flex justify-content-center" style="flex-direction:column; text-align:center;">
