@@ -81,7 +81,7 @@
                                 </h5>
                                 <label for="id_input_img">
                                     <img id="id_profile_img" src="images/Profile.bmp" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
-                                    <input type="file" id="id_input_img" style="display:none;" onchange="" accept="image/*">
+                                    <input type="file" id="id_input_img" style="display:none;" onchange="loadImg()" accept="image/*">
                                     <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
                                 </label>
                             </div>

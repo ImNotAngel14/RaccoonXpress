@@ -61,7 +61,7 @@
                             while ($row = $result->fetch_assoc())
                             {
                                 //$product_name, $price, $image, $rating
-                                printProduct($row['name'], $row['price'],base64_encode($row['image1']),5);
+                                printProduct($row['product_id'] ,$row['name'], $row['price'],base64_encode($row['image1']),5);
                             }
                         }
                         else

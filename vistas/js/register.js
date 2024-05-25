@@ -143,7 +143,7 @@ async function registerUser()
     const cRole = document.getElementById("id_role").value;
     const cImage = document.getElementById("id_input_img").files[0];
     const base64Image = await toBase64(cImage);
-    console.log(base64Image);
+    //console.log(base64Image);
     var authResult = false;
     let xhr = new XMLHttpRequest();
     const user = 
@@ -182,4 +182,13 @@ async function registerUser()
     }
     xhr.send(JSON.stringify(user));
     return authResult;
+}
+
+async function loadImg()
+{
+    const cImage = document.getElementById("id_input_img").files[0];
+    const prevImage = document.getElementById("id_profile_img");
+    const base64Image = await toBase64(cImage);
+    prevImage.src = base64Image;
+    return;
 }

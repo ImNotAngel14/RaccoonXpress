@@ -1,10 +1,10 @@
 <?php
-function printProduct($product_name, $price, $base64Image, $rating)
+function printProduct($product_id, $product_name, $price, $base64Image, $rating)
 {
     echo "
     <div class='col d-inline-flex justify-content-center'>
         <div class='card' style='width: 18rem;'>
-            <a href='' style='color: black; text-decoration: none;'>
+            <a href='product.php?product=". $product_id ."' style='color: black; text-decoration: none;'>
                 <img src='data:image/png;base64," . $base64Image ."' class='card-img-top' alt='' style='height: 18rem; object-fit: contain;'>
                 <div class='card-body'>
                     <p class='card-text'>". $product_name ."</p>
