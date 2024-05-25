@@ -71,8 +71,11 @@
     <div class="container">
 
         <section class="cta">
-            <h2><a href="register.html" class="btn-cta">Registrate ahora</a></h2>
+            <h2><a href="register.php" class="btn-cta">Registrate ahora</a></h2>
             <p>Vive la experiencia completa</p>
+            <br>
+            <p style="color: #494949;">¿Ya tienes una cuenta? &nbsp;</p>
+            <span class="link"><a href="login.php" style="color: lightskyblue;">Inicia Sesión</a><span>
         </section>
 
         <!-- <h1 id="watchme">Watch me move</h1> -->

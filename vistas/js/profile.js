@@ -1,6 +1,36 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+    const button = document.getElementById('id_sign_off');
+    button.addEventListener('click', function() {
+        window.location.replace("./logout.php");
+    });
+    const deleteButton = document.getElementById('id_btn_delete_user');
+    deleteButton.addEventListener('click', async function() {
+        try {
+            const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/deleteUser.php', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            // Actuamos en base a la respuesta de la API
+            const data = await response.json();
+            if(data.success)
+            {
+                window.location.replace("../index.php");
+            }
+            else
+            {
+                console.error("No se pudo registrar al usuario.");
+            }
+        } catch (error) {
+            console.error('Error al llamar a la API:', error);
+        };
+    });
+});
+
 function validate()
 {
-    event.preventDefault();
     const element_password = document.getElementById('id_password');
     const element_email = document.getElementById('id_email');
     const element_username = document.getElementById('id_username');
@@ -63,7 +93,7 @@ function validate()
     
     if(valid_input)
     {
-        var saved = registerUser();
+        var saved = updateUser();
         return saved;
     }
     else
@@ -131,64 +161,47 @@ function toBase64(file) {
     });
 }
 
-async function registerUser()
+async function updateUser()
 {
+    event.preventDefault();
     const cEmail = document.getElementById("id_email");
     const cUsername = document.getElementById("id_username");
+    const cFullname = document.getElementById("id_name");
     const cPassword = document.getElementById("id_password");
-    const cName = document.getElementById("id_name");
-    const cLastName = document.getElementById("id_lastname");
     const cBirthdate = document.getElementById("id_birthdate").value;
-    const cGender = document.getElementById("id_genre").value;
-    const cRole = document.getElementById("id_role").value;
-    const cImage = document.getElementById("id_input_img").files[0];
-    const base64Image = await toBase64(cImage);
-    //console.log(base64Image);
-    var authResult = false;
-    let xhr = new XMLHttpRequest();
-    const user = 
-    {
-        username: cUsername.value,
-        password: cPassword.value,
-        email: cEmail.value,
-        name: cName.value,
-        lastname: cLastName.value,
-        birthdate: cBirthdate,
-        gender: cGender,
-        role: cRole,
-        profileImage: base64Image.substring(22)
-    };
-    xhr.open("POST", "../controladores/registerUser.php", true);
-    xhr.onreadystatechange = function () 
-    {
-        try
-        {
-            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200)
-            {
-                let res = JSON.parse(xhr.response);
-                if(res.success != true)
-                {
-                    authResult = false;
-                    return;
-                }
-                alert("Para finalizar tu registro completo es necesario que ingreses a tu cuenta, seccion de direcciones y agregues una dirección");
-                window.location.replace("./login.php");
-                authResult = true;
-            }
-        }catch(error)
-        {
-            console.error(xhr.response);
-        }
-    }
-    xhr.send(JSON.stringify(user));
-    return authResult;
-}
+    const cProfileImage = document.getElementById("id_profileImage").files[0];
+    const cGender = document.getElementById("id_gender").value;
+    const cVisbility = document.getElementById("id_visibility").checked;
+    const base64Image = await toBase64(cProfileImage);
+    try {
+        const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/updateUser.php', {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                username: cUsername.value,
+                password: cPassword.value,
+                email: cEmail.value,
+                name: cFullname.value,
+                birthdate: cBirthdate,
+                gender: cGender,
+                visibility: cVisbility,
+                profileImage: base64Image.substring(22) })
+        });
 
-async function loadImg()
-{
-    const cImage = document.getElementById("id_input_img").files[0];
-    const prevImage = document.getElementById("id_profile_img");
-    const base64Image = await toBase64(cImage);
-    prevImage.src = base64Image;
-    return;
+        // Actuamos en base a la respuesta de la API
+        const data = await response.json();
+        if(data.success)
+        {
+        }
+        else
+        {
+            console.error("No se pudo registrar al usuario.");
+            return false;
+        }
+    } catch (error) {
+        console.error('Error al llamar a la API:', error);
+    }
+    return true;
 }

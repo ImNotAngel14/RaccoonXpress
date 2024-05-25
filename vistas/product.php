@@ -38,6 +38,49 @@
     // Cerrar la conexión
     $conexion->close();
 ?-->
+<?php
+    include "../configuracion/bd_config.php";
+    include "productTemplate.php";
+    include "navbar.php";
+    session_start();
+    // Verificamos la sesion del usuario
+    if(isset($_SESSION['AUTH']))
+    {
+        // Sesion iniciada
+        $user_id = $_SESSION['AUTH'];
+    }
+    else
+    {
+        // No hay sesion iniciada.
+        header("Location: ./vistas/landing_page.php");
+    }
+    // Obtenemos los datos de los productos
+    try
+    {
+        $mysqli = db::connect();
+        if(isset($_GET["product"]))
+        {
+            $product = $_GET["product"];
+            $sql = "SELECT * FROM products WHERE `product_id` = $product;";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) 
+            {
+                $product_data = $result->fetch_assoc();
+            }
+        }
+    }
+    catch(error)
+    {
+        echo "Error en la conexion a la base de datos: " . error;
+    }
+    finally
+    {
+        db::disconnect($mysqli);
+    }
+    
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,57 +95,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     </head>
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
-        <div class="row align-items-center general_navbar py-1">
-            <div class="col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block">
-                <a class="navbar-brand d-flex justify-content-center" href="#">
-                    <img src="images/Imagotipo.png" alt="" height="30 rem">
-                </a>
-            </div>
-            <div class="col-md-8 col-8">
-                <form class="" method="get" action="resultado.php">
-                    <div class="input-group">
-                        <input class="form-control" type="search" placeholder="Buscar..." aria-label="Search" id="id_search" name="search">
-                        <div class="input-group-append">
-                            <button id="id_navbar_search" class="btn" type="submit" style="background-color: white; border-left: white; border-color: #ced4da;">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-12">
-                <nav class="navbar navbar-expand-md navbar-light ">
-                    <div class="container-fluid justify-content-center">
-                        <div class="flex-row">
-                            <button class="navbar-toggler col" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Perfil</a>
-                                    </li>
-        
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Mis compras</a>
-                                    </li>
-        
-                                    <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Mis listas</a>
-                                    </li>
-        
-                                    <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Carrito de compras</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
+        <?php
+            printNavbar($user_id);
+        ?>
         <div class="container mt-5">
             <div class="my-2">
                 <div class="d-flex flex-row justify-content-center">
@@ -111,21 +106,20 @@
                     </div>
                     <div class="col-sm-4 d-flex align-items-center">
                         <div class='image'>
-                            <img src='' class='rounded img-thumbnail' style='object-fit:fill;'>
+                            <img src='data:image/png;base64, <?php echo base64_encode($product_data['image1']); ?>' class='rounded img-thumbnail' style='height: 18rem; object-fit: contain;''>
                         </div>
                     </div>
                     <div class="col-sm-4 ">
                         <div class="card rounded ">
                             <div class="card-body product-card">
-                                <h4 class='card-title'></h4>
+                                <h4 class='card-title'><?php echo $product_data['name']; ?></h4>
                                 <p class='card-text'>
-                                    <small class='text-muted'>Nombre</small>
+                                    <small class='text-muted'><?php echo $product_data['description']; ?></small>
                                 </p>
                                 <p class='card-text'><small class='text-muted'> Categoría: </small></p>
-                                <p class='card-text'> Descripcion</p>
                                 <p class='card-text'>Valoración: </p>
-                                <h5 class='card-title'>Precio: $</h5>
-                                <p class='card-title'>Disponibles: <strong>0 </strong> unidades. </p>
+                                <h5 class='card-title'>Precio: <?php echo $product_data['price']; ?>$</h5>
+                                <p class='card-title'>Disponibles: <strong><?php echo $product_data['quantity']; ?> </strong> unidades. </p>
                                 <div class='form-group'>
                                     <label for='cantidad'>Cantidad:</label>
                                     <input type='number' class='form-control' id='cantidad' name='cantidad' min='1' max='' value='1' style='border: 1px solid #333;'>

@@ -2,11 +2,10 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-if( !isset($_SESSION["AUTH"])) {
-    include_once "./views/home.php";
-    //include_once "./views/login.php";
-    //header("Location: ./views/home.php");
+if(!isset($_SESSION["AUTH"])) {
+    // No hay sesion iniciada
+    header("Location: ./vistas/landing_page.php");
+    //
 } else {
-    //require_once "./views/home.php";
-    header("Location: ./views/landing_page.html");
+    header("Location: ./vistas/home.php");
 }

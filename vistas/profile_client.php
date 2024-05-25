@@ -1,3 +1,49 @@
+<?php
+    include "../configuracion/bd_config.php";
+    include "navbar.php";
+    session_start();
+    // Verificamos la sesion del usuario
+    if(isset($_SESSION['AUTH']))
+    {
+        // Sesion iniciada
+        $user_id = $_SESSION['AUTH'];
+    }
+    else
+    {
+        // No hay sesion iniciada.
+        header("Location: ./vistas/landing_page.php");
+    }
+    // Obtenemos los datos de 
+    try
+    {
+        $mysqli = db::connect();
+        if(isset($_GET["profile"]))
+        {
+            $busqueda = $_GET["profile"];
+            //`username`, `user_password`, `email`, `fullname`, `birthdate`, `entry_date`, `gender`, `is_active`, `visibility`, `user_role`, `profile_image`
+            $sql = "SELECT `username`, `user_password`, `email`, `fullname`, `birthdate`, `visibility`, `profile_image`, `gender` FROM `users` WHERE `user_id`=?";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("i",$busqueda);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if($result->num_rows > 0)
+            {
+                $row = $result->fetch_assoc();
+            }
+            else{
+            }
+        }
+    }
+    catch(error)
+    {
+        echo "Error en la conexion a la base de datos: " . error;
+    }
+    finally
+    {
+        db::disconnect($mysqli);
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,57 +61,9 @@
 <body>
     <div class="container-fluid">
         <!-- NAVBAR -->
-        <div class="row align-items-center general_navbar py-1">
-            <div class="col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block">
-                <a class="navbar-brand d-flex justify-content-center" href="#">
-                    <img src="images/Imagotipo.png" alt="" height="30 rem">
-                </a>
-            </div>
-            <div class="col-md-8 col-8">
-                <form class="" method="get" action="resultado.php">
-                    <div class="input-group">
-                        <input class="form-control" type="search" placeholder="Buscar..." aria-label="Search" id="id_search" name="search">
-                        <div class="input-group-append">
-                            <button id="id_navbar_search" class="btn" type="submit" style="background-color: white; border-left: white; border-color: #ced4da;">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-12">
-                <nav class="navbar navbar-expand-md navbar-light ">
-                    <div class="container-fluid justify-content-center">
-                        <div class="flex-row">
-                            <button class="navbar-toggler col" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Perfil</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Mis compras</a>
-                                    </li>
-
-                                    <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Mis listas</a>
-                                    </li>
-
-                                    <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Carrito de compras</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
+        <?php
+            printNavbar($user_id);
+        ?>
         <div class="row justify-content-center sidebar_profile">
             <!-- Sidebar -->
             <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12 user_card_container d-flex align-items-stretch h-100">
@@ -73,14 +71,19 @@
                     <div class="card bg-light information_area h-100">
                         <div class="card-body d-flex flex-column">
                             <div class="text-center">
-                                <h3 class="mt-2">Nombre de Usuario</h3>
+                                <h3 class="mt-2"><?php echo $row['username']; ?></h3>
                                 <div class="position-absolute top-0 end-0">
                                     <button id="id_edit_user" class="btn btn-outline-secondary" type="submit" style="border: #ced4da;" data-bs-toggle="modal" data-bs-target="#Modalmodifie">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>
                                 </div>
                                 <label for="id_input_img">
-                                    <img id="id_profile_img" src="images/Profile.bmp" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
+                                    <img id="id_profile_img" src="<?php
+                                    
+                                    
+                                    //echo "data:image/png;base64," . base64_encode($row['profile_image']);
+                                    echo isset($row['profile_image']) ?
+                                    "data:image/png;base64," . $row['profile_image'] : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
                                     <input type="file" id="id_input_img" style="display:none;" onchange="previewImg()" accept="image/*">
                                     <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
                                 </label>
@@ -89,16 +92,16 @@
                                 <!-- <CUANDO UN USUARIO ENTRE A ESTE PERFIL PRIVADO> -->
                                 <!-- <h5 class="mt-2">Informacion privada</h5> -->
                                 <div class="sidebar_email">
-                                    <h5 class="mt-2" >Correo : </h5><h5 class="mt-2"> gmail@gmail.com</h5>
+                                    <h5 class="mt-2" >Correo : </h5><h5 class="mt-2"><?php echo $row['email'];?></h5>
                                 </div>
                                 <div class="sidebar_realname">
-                                    <h5 class="mt-2" >Nombre completo : </h5><h5 class="mt-2"> Nombre</h5>
+                                    <h5 class="mt-2" >Nombre completo : </h5><h5 class="mt-2"><?php echo $row['fullname'];?></h5>
                                 </div>
                                 <div class="sidebar_BirthDate">
-                                    <h5 class="mt-2" >Fecha Nacimiento : </h5><h5 class="mt-2"> 01-Ene-02</h5>
+                                    <h5 class="mt-2" >Fecha Nacimiento : </h5><h5 class="mt-2"><?php echo $row['birthdate'];?></h5>
                                 </div>
                             </div>
-                            <div class="position-absolute bottom-0 end-0">
+                            <div class="position-absolute bottom-0 end-0 p-4">
                                 <button id="id_sign_off" class="btn btn btn-secondary" style="border: #ced4da;">
                                     Cerrar Sesión
                                 </button>
@@ -170,33 +173,64 @@
             <h5 class="modal-title" id="ModalmodifieLabel">Modificar Perfil</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        <form id="profile_form">
+        <form id="profile_form" enctype="multipart/form-data" method="post" onsubmit="return validate()">
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="username" class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+                    <input type="text" class="form-control" id="id_username" name="username" placeholder="Nombre de usuario" value="<?php echo $row['username'];?>">
+                    <p id="id_username_validation" class="error_msg" hidden>El nombre de usuario debe ser mayor a 3 letras.</p>
                 </div>
                 <div class="mb-3">
-                    <label for="realname" class="form-label">Nombre Completo</label>
-                    <input type="text" class="form-control" id="realname" name="realname" placeholder="Nombre Completo">
+                    <label for="realname" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="id_name" name="name" placeholder="Nombre Completo" value="<?php echo $row['fullname'];?>">
+                </div>
+                <div class="form-group">
+                    <label for="id_birthdate"></label>
+                    <input type="date" class="dato" id="id_birthdate" name="name_birthdate" placeholder="Fecha de Nacimiento " value="<?php echo $row['birthdate'];?>"required>
+                </div>
+                <div class="form-group">
+                    <label for="id_gender"></label>
+                    <select class="dato" id="id_gender" name="name_genre" required>
+                        <option disabled selected>Género</option>
+                        <option value='0' class='opcion' <?php if(!$row['gender']) echo "selected";?>>Femenino</option>
+                        <option value='1' class='opcion' <?php if($row['gender']) echo "selected";?>>Masculino</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="profile_image" class="form-label">Foto de perfil</label>
-                    <input type="file" class="form-control" id="profile_image" name="profile_image">
+                    <input type="file" class="form-control" id="id_profileImage" name="profile_image">
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico">
+                    <input type="email" class="form-control" id="id_email" name="email" placeholder="Correo electrónico" value="<?php echo $row['email'];?>">
+                    <p id="id_email_validation" class="error_msg" hidden>El correo electrónico ya está registrado.</p>
+                    <p id="id_email_validation2" class="error_msg" hidden>Escriba un correo electronico válido.</p>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Nueva Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+                    <input type="password" class="form-control" id="id_password" name="password" placeholder="Contraseña" value="<?php echo $row['user_password'];?>">
                 </div>
-                <div class="mb-3">
-                    <label for="confirm_password" class="form-label">Confirmar Nueva contraseña</label>
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña">
+                <div id="id_pass_validation" class="error_msg" hidden>
+                    <p  >La contraseña debe contener lo siguiente:</p>
+                    <ul >
+                        <li id="id_req_length">8 caracteres</li>
+                        <li id="id_req_upper">Una mayúscula</li>
+                        <li id="id_req_lower">Una minúscula</li>
+                        <li id="id_req_number">Un número</li>
+                        <li id="id_req_special">Un carácter especial</li>
+                    </ul>
                 </div>
-
+                <div>
+                    <input type="checkbox" id="id_visibility" name="visibility" 
+                    <?php 
+                        if($row['visibility'])
+                            echo " checked ";
+                        else
+                            echo "";
+                    ?>
+                    >
+                    <label for="id_visibility">Perfil público</label>
+                </div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -238,7 +272,7 @@
                 <br>
                 <div class=" text-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Aceptar</button>
+                    <button type="button" class="btn btn-primary" id="id_btn_delete_user">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -248,10 +282,10 @@
 
     <!-- Script PARA OCULTAR CONTRASEÑA -->
     <script>
+        /*
         const togglePasswordButton = document.getElementById('togglePassword');
         const passwordText = document.querySelector('.password_show');
         const passwordHidden = document.querySelector('.password-hidden');
-    
         togglePasswordButton.addEventListener('click', function() {
             if (passwordText.style.display === 'none') {
                 passwordText.style.display = 'inline';
@@ -263,10 +297,12 @@
                 togglePasswordButton.textContent = 'Ocultar Contraseña';
             }
         });
+        */
     </script>
 
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

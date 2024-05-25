@@ -1,17 +1,32 @@
 <?php
+   class db {
+      
+      //Conexion de la base de datos
+      static public function connect() {
+         $host = "localhost";
+         $db = "raccoonxpress";
+         $user = "root";
+         $pass = "";
+         try {
+            $mysqli = new mysqli($host,$user,$pass,$db);
+            if ($mysqli->connect_errno) {
+               $response = (object)array("status"=>500,"message"=>$mysqli->connect_error);
+               echo json_encode($response);
+               die("Error de conexión: " . $mysqli->connect_error);
+            }
+         } catch(Exception $e) {
+            $response = (object)array("status"=>500,"message"=>"Error a conectarse a la base de datos, favor de crear la base de datos en el archivo database.sql o configurar el usuario y contraseña en el archivo db.php");
+            echo json_encode($response);
+            exit;
+         }
+         return $mysqli;
+      }
 
-$server='localhost';
-$user='root';
-$pass='';
-$db='interface';
-
- $conexion= new mysqli($server, $user, $pass, $db);
-
- if($conexion->connect_errno){
-    echo "<label style='color: red;'>Sin conexión</label>";
-     die("Conexion fallida". $conexion->connect_errno);
- }else{
-    #echo "<label style='color: white;'>Conectado</label>";
-
- }
+      // Desconexion de la base de datos
+      static public function disconnect($mysqli) {
+         if ($mysqli instanceof mysqli) {
+            $mysqli->close();
+         }
+      }
+   }
 ?>
