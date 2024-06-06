@@ -50,6 +50,11 @@
         <link rel="stylesheet" type="text/css" href="css/general.css">
         <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+        <style>
+            .hidden {
+              display: none;
+            }
+          </style>
     </head>
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;" class="container-fluid">
         <div class="row align-items-center general_navbar py-1">
@@ -103,31 +108,127 @@
                 </nav>
             </div>
         </div>
+        <div class=" container mt-5 justify-content-center text-center">
+            <h3>Consulta de ventas</h3>
+            <hr>
+        </div>
+        <div class="container mt-5" >
+            <form id="form" onsubmit="showTableD(event)">
+                <h4>Ventas Detalladas: </h4>
+                <label for="fechaInicioD">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicioD" name="fechaInicioD">
+                <label for="fechaFinalD">Fecha Final:</label>
+                <input type="date" id="fechaFinalD" name="fechaFinalD">
+                <button type="submit">Mostrar Ventas</button>
+            </form>
+
+            <table id="tablaVentasD" class="table hidden">
+                <thead>
+                  <tr>
+                    <th scope="row">#</th>
+                    <th scope="col">Fecha y Hora</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Calificacion</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Existencia actual</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>2024-01-01</th>
+                    <td>nombre cat</th>
+                    <td>nombre prod</th>
+                    <td>100 likes</th>
+                    <td>$100</th>
+                    <td>100</th>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>2024-01-01</th>
+                    <td>nombre cat</th>
+                    <td>nombre prod</th>
+                    <td>100 likes</th>
+                    <td>$100</th>
+                    <td>100</th>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="container mt-5">
+            <form id="form" onsubmit="showTableA(event)">
+                <h4>Ventas Agrupadas: </h4>
+                <label for="fechaInicioA">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicioA" name="fechaInicioA">
+                <label for="fechaFinalA">Fecha Final:</label>
+                <input type="date" id="fechaFinalA" name="fechaFinalA">
+                <button type="submit">Mostrar Ventas</button>
+            </form>
+            <table id="tablaVentasA" class="table hidden">
+                <thead>
+                    <tr>
+                        <th scope="row">#</th>
+                        <th scope="col">Mes-Año</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Ventas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>01-2024</th>
+                      <td>nombre cat</th>
+                      <td>100</th>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>01-2024</th>
+                      <td>nombre cat</th>
+                      <td>100</th>
+                    </tr>
+                  </tbody>
+            </table>
+        </div>
         <div class="container mt-5">
             <div class="row">
-                <h4>Historial de compras:
-                </h4>
+                <form id="form" onsubmit="showProductsList(event)">
+                    <h4>Productos Actuales:  </h4>
+                    <div class="form-group">
+                        <label for="categoria">Categoria:</label>
+                        <select class="dato" id="categoria" name="nombre_categoria" required>
+                            <option disabled selected>Todas</option>
+                            <option value="1" class="opcion">Categoria 1</option>
+                            <option value="2" class="opcion">Categoria 2</option>
+                        </select>
+                    </div>
+                    <button type="submit">Mostrar Productos</button>
+                </form>
             </div>
-            <div class="card d-flex my-2" style="flex-direction:row;">
-                <div class="card_img">
-                    <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
+            <div class="ListaProductos hidden" id="ListaProductos">
+                <div class="card d-flex my-2" style="flex-direction:row;">
+                    <div class="card_img">
+                        <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Nombre producto</h5>
+                        <p class="card-text">Descripción</p>
+                        <h6 class="card-text">Precio $X.00 MXN</h6>
+                        <h6 class="card-text">En existencia: 1</h6>
+                        <h6 class="card-text">Categoría: Categoria</h6>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">Nombre producto</h5>
-                    <p class="card-text">Descripción</p>
-                    <h6 class="card-text">Precio $X.00 MXN</h6>
-                    <h6 class="card-text">Cantidad: 1</h6>
-                </div>
-            </div>
-            <div class="card d-flex my-2" style="flex-direction:row;">
-                <div class="card_img">
-                    <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Nombre producto</h5>
-                    <p class="card-text">Descripción</p>
-                    <h6 class="card-text">Precio $X.00 MXN</h6>
-                    <h6 class="card-text">Cantidad: 1</h6>
+                <div class="card d-flex my-2" style="flex-direction:row;">
+                    <div class="card_img">
+                        <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Nombre producto</h5>
+                        <p class="card-text">Descripción</p>
+                        <h6 class="card-text">Precio $X.00 MXN</h6>
+                        <h6 class="card-text">En existencia: 1</h6>
+                        <h6 class="card-text">Categoría: Categoria</h6>
+                    </div>
                 </div>
             </div>
             <!--div class="row row-cols-1 row-cols-md-4 g-4">
@@ -227,4 +328,43 @@
             });
         });
     </script>
+<script>
+    function showTableA(event) {
+        event.preventDefault(); // Evita que el formulario se envíe
+
+        // Obtiene las fechas del formulario
+        var fechaInicio = document.getElementById('fechaInicioA').value;
+        var fechaFinal = document.getElementById('fechaFinalA').value;
+
+        // Aquí podrías hacer una petición AJAX para obtener los datos basados en las fechas
+
+        // Muestra la tabla
+        document.getElementById('tablaVentasA').classList.remove('hidden');
+    }
+
+    function showTableD(event) {
+        event.preventDefault(); // Evita que el formulario se envíe
+
+        // Obtiene las fechas del formulario
+        var fechaInicio = document.getElementById('fechaInicioD').value;
+        var fechaFinal = document.getElementById('fechaFinalD').value;
+
+        // Aquí podrías hacer una petición AJAX para obtener los datos basados en las fechas
+
+        // Muestra la tabla
+        document.getElementById('tablaVentasD').classList.remove('hidden');
+    }
+
+    function showProductsList(event) {
+        event.preventDefault(); // Evita que el formulario se envíe
+
+        // Obtiene las fechas del formulario
+        var categoriaID = document.getElementById('categoria').value;
+
+        // Aquí podrías hacer una petición AJAX para obtener los datos basados en las fechas
+
+        // Muestra la tabla
+        document.getElementById('ListaProductos').classList.remove('hidden');
+    }
+</script>
 </html>

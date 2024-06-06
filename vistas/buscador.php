@@ -8,6 +8,7 @@
     {
         // Sesion iniciada
         $user_id = $_SESSION['AUTH'];
+        $user_role = $_SESSION["ROLE"];
     }
     else
     {
@@ -52,7 +53,7 @@
     </head>
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
         <?php
-            printNavbar($user_id);
+            printNavbar($user_id,$user_role);
         ?>
         <div class="container mt-5">
             <div class="row">

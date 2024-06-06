@@ -1,6 +1,8 @@
 <?php
-function printNavbar($user_id)
+function printNavbar($user_id, $user_role)
 {
+    // Si es un vendedor, cambiar mis listas por vender y mis compras por ventas.
+    // ...
     echo "
     <div class='row align-items-center general_navbar py-1'>
         <div class='col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block'>
@@ -34,19 +36,46 @@ function printNavbar($user_id)
                                 <li class='nav-item'>
                                     <a class='nav-link' aria-current='page' href='profileRedirection.php?profile=". $user_id . "'>Perfil</a>
                                 </li>
-    
-                                <li class='nav-item'>
-                                    <a class='nav-link' aria-current='page' href='#'>Mis compras</a>
-                                </li>
-    
-                                <li class='nav-item' id='wishLists'>
-                                    <a class='nav-link' aria-current='page' href='#'>Mis listas</a>
-                                </li>
-    
-                                <li class='nav-item' id='shoppingCart'>
-                                    <a class='nav-link' aria-current='page' href='#'>Carrito de compras</a>
-                                </li>
-                            </ul>
+                            ";
+                            switch($user_role)
+                            {
+                                case 0:
+                                    // Comprador
+                                    echo "
+                                        <li class='nav-item'>
+                                            <a class='nav-link' aria-current='page' href='purchases.php'>Mis compras</a>
+                                        </li>
+            
+                                        <li class='nav-item' id='wishLists'>
+                                            <a class='nav-link' aria-current='page' href='lists.php'>Mis listas</a>
+                                        </li>
+            
+                                        <li class='nav-item' id='shoppingCart'>
+                                            <a class='nav-link' aria-current='page' href='shopping_cart.php'>Carrito de compras</a>
+                                        </li>
+                                    ";
+                                    break;
+                                case 1:
+                                    // Vendedor
+                                    echo "
+                                        <li class='nav-item'>
+                                            <a class='nav-link' aria-current='page' href='sales.php'>Mis ventas</a>
+                                        </li>
+            
+                                        <li class='nav-item' id='id_sell'>
+                                            <a class='nav-link' aria-current='page' href='createProduct.php'>Vender</a>
+                                        </li>
+            
+                                        <li class='nav-item' id='id_categorys'>
+                                            <a class='nav-link' aria-current='page' href='createCategory.php'>Categorias</a>
+                                        </li>
+                                    ";
+                                    break;
+                                case 2:
+                                    // Administrador
+                                    break;
+                            }  
+                            echo"</ul>
                         </div>
                     </div>
                 </div>

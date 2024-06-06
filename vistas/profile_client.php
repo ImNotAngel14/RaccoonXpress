@@ -7,6 +7,7 @@
     {
         // Sesion iniciada
         $user_id = $_SESSION['AUTH'];
+        $user_role = $_SESSION["ROLE"];
     }
     else
     {
@@ -19,11 +20,11 @@
         $mysqli = db::connect();
         if(isset($_GET["profile"]))
         {
-            $busqueda = $_GET["profile"];
+            $profile = $_GET["profile"];
             //`username`, `user_password`, `email`, `fullname`, `birthdate`, `entry_date`, `gender`, `is_active`, `visibility`, `user_role`, `profile_image`
             $sql = "SELECT `username`, `user_password`, `email`, `fullname`, `birthdate`, `visibility`, `profile_image`, `gender` FROM `users` WHERE `user_id`=?";
             $stmt = $mysqli->prepare($sql);
-            $stmt->bind_param("i",$busqueda);
+            $stmt->bind_param("i",$profile);
             $stmt->execute();
             $result = $stmt->get_result();
             if($result->num_rows > 0)
@@ -58,11 +59,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
     <div class="container-fluid">
         <!-- NAVBAR -->
         <?php
-            printNavbar($user_id);
+            printNavbar($user_id,$user_role);
         ?>
         <div class="row justify-content-center sidebar_profile">
             <!-- Sidebar -->
@@ -72,11 +73,18 @@
                         <div class="card-body d-flex flex-column">
                             <div class="text-center">
                                 <h3 class="mt-2"><?php echo $row['username']; ?></h3>
-                                <div class="position-absolute top-0 end-0">
-                                    <button id="id_edit_user" class="btn btn-outline-secondary" type="submit" style="border: #ced4da;" data-bs-toggle="modal" data-bs-target="#Modalmodifie">
-                                        <i class="fa fa-edit" aria-hidden="true"></i>
-                                    </button>
-                                </div>
+                                <?php 
+                                    if($profile == $user_id)
+                                    {
+                                        echo "
+                                        <div class='position-absolute top-0 end-0'>
+                                            <button id='id_edit_user' class='btn btn-outline-secondary' type='submit' style='border: #ced4da;' data-bs-toggle='modal' data-bs-target='#Modalmodifie'>
+                                                <i class='fa fa-edit' aria-hidden='true'></i>
+                                            </button>
+                                        </div>";
+                                    }
+                                ?>
+                                
                                 <label for="id_input_img">
                                     <img id="id_profile_img" src="<?php
                                     
@@ -91,24 +99,41 @@
                             <div>
                                 <!-- <CUANDO UN USUARIO ENTRE A ESTE PERFIL PRIVADO> -->
                                 <!-- <h5 class="mt-2">Informacion privada</h5> -->
-                                <div class="sidebar_email">
-                                    <h5 class="mt-2" >Correo : </h5><h5 class="mt-2"><?php echo $row['email'];?></h5>
-                                </div>
-                                <div class="sidebar_realname">
-                                    <h5 class="mt-2" >Nombre completo : </h5><h5 class="mt-2"><?php echo $row['fullname'];?></h5>
-                                </div>
-                                <div class="sidebar_BirthDate">
-                                    <h5 class="mt-2" >Fecha Nacimiento : </h5><h5 class="mt-2"><?php echo $row['birthdate'];?></h5>
-                                </div>
+                                <?php 
+
+                                    if($row['visibility'])
+                                    {
+                                        echo "
+                                        <div class='sidebar_email'>
+                                            <h5 class='mt-2' >Correo : </h5><h5 class='mt-2'>". $row['email']."</h5>
+                                        </div>
+                                        <div class='sidebar_realname'>
+                                            <h5 class='mt-2' >Nombre completo : </h5><h5 class='mt-2'>".$row['fullname']."</h5>
+                                        </div>
+                                        <div class='sidebar_BirthDate'>
+                                            <h5 class='mt-2' >Fecha Nacimiento : </h5><h5 class='mt-2'>".$row['birthdate']."</h5>
+                                        </div>
+                                        ";
+                                    }
+                                ?>
+                                
                             </div>
-                            <div class="position-absolute bottom-0 end-0 p-4">
-                                <button id="id_sign_off" class="btn btn btn-secondary" style="border: #ced4da;">
-                                    Cerrar Sesión
-                                </button>
-                                <button id="id_delete_account" class="btn btn btn-danger" style="border: #ced4da;" data-bs-toggle="modal" data-bs-target="#ModalDeleteAccount">
-                                    Eliminar Perfil
-                                </button>
-                            </div>
+                            <?php
+                                if($profile == $user_id)
+                                {
+                                    echo "
+                                    <div class='position-absolute bottom-0 end-0 p-4'>
+                                        <button id='id_sign_off' class='btn btn btn-secondary' style='border: #ced4da;'>
+                                            Cerrar Sesión
+                                        </button>
+                                        <button id='id_delete_account' class='btn btn btn-danger' style='border: #ced4da;' data-bs-toggle='modal' data-bs-target='#ModalDeleteAccount'>
+                                            Eliminar Perfil
+                                        </button>
+                                    </div>
+                                    ";
+                                }
+                            ?>
+                            
                             <div class="flex-grow-1"></div>
                         </div>
                     </div>
@@ -121,7 +146,13 @@
                     <div class="col">
                         <h3>Listas guardadas</h3>
                         <hr>
-                        <div class="card d-flex my-2" style="flex-direction:row;">
+                        <?php
+                            if(!$row['visibility'])
+                            {
+                                echo "Este perfil es privado.";
+                            }
+                        ?>
+                        <!--div class="card d-flex my-2" style="flex-direction:row;">
                             <div class="card_img">
                                 <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
                             </div>
@@ -159,7 +190,7 @@
                             <button id="id_delete_list" class="btn btn-outline-secondary" type="submit" style="border: #ced4da;" data-bs-toggle="modal" data-bs-target="#ModalDeleteList">
                                 <i class="fa-solid fa-trash" style="color: rgb(255, 84, 84);"></i>                            
                             </button>
-                        </div>
+                        </div-->
                     </div>
                 </div>
             </div>

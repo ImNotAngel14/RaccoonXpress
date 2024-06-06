@@ -50,8 +50,13 @@
         <link rel="stylesheet" type="text/css" href="css/general.css">
         <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+        <style>
+            .hidden {
+              display: none;
+            }
+          </style>
     </head>
-    <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
+    <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;" class="container-fluid">
         <div class="row align-items-center general_navbar py-1">
             <div class="col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block">
                 <a class="navbar-brand d-flex justify-content-center" href="#">
@@ -103,51 +108,50 @@
                 </nav>
             </div>
         </div>
-        <div class="container mt-5">
-            <div class="row">
-                <h4>Ventas concretadas: 
-                </h4>
-            </div>
-            <div class="card d-flex my-2" style="flex-direction:row;">
-                <div class="card_img">
-                    <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Nombre producto</h5>
-                    <p class="card-text">Descripción</p>
-                    <h6 class="card-text">Precio $X.00 MXN</h6>
-                    <h6 class="card-text">Cantidad: 1</h6>
-                </div>
-            </div>
-            <div class="card d-flex my-2" style="flex-direction:row;">
-                <div class="card_img">
-                    <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Nombre producto</h5>
-                    <p class="card-text">Descripción</p>
-                    <h6 class="card-text">Precio $X.00 MXN</h6>
-                    <h6 class="card-text">Cantidad: 1</h6>
-                </div>
-            </div>
-            <!--div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class='row row-cols-1 row-cols-md-4 row-cols- g-4'>
-                    <div class='col d-inline-flex justify-content-center'>
-                        <div class='card' style='width: 18rem;'>
-                            <a href='pagina_producto.php?id=" . $row['id'] . "&user_id=" . $_SESSION['id_user'] . "' style='color: black; text-decoration: none;'>
-                                <img src='" . $row['imagen'] . "' class='card-img-top' alt='" . $row['nombre'] . "' style='height: 18rem; object-fit: contain;'>
-                                <div class='card-body'>
-                                    <p class='card-text'></p>
-                                    <h5 class='card-title'></h5>
-                                    <div class='rate-container' style='color: #ABC684'>
-                                        <i class='fa-solid fa-star'></i>
-                                    </div>
-                                    <br>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-            </div--> 
+        <div class=" container mt-5 justify-content-center text-center">
+            <h3>Consulta de pedidos</h3>
+            <hr>
+        </div>
+        <div class="container mt-5" >
+            <form id="form" onsubmit="showTableD(event)">
+                <h4>Pedidos realizados </h4>
+                <label for="fechaInicioP">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicioP" name="fechaInicioP">
+                <label for="fechaFinalP">Fecha Final:</label>
+                <input type="date" id="fechaFinalP" name="fechaFinalP">
+                <button type="submit">Mostrar Ventas</button>
+            </form>
+
+            <table id="tablaVentasP" class="table hidden">
+                <thead>
+                  <tr>
+                    <th scope="row">#</th>
+                    <th scope="col">Fecha y Hora</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Calificacion</th>
+                    <th scope="col">Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>2024-01-01</th>
+                    <td>nombre cat</th>
+                    <td>nombre prod</th>
+                    <td>100 likes</th>
+                    <td>$100</th>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>2024-01-01</th>
+                    <td>nombre cat</th>
+                    <td>nombre prod</th>
+                    <td>100 likes</th>
+                    <td>$100</th>
+                  </tr>
+                </tbody>
+              </table>
         </div>
         <br><br>
         <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
@@ -227,4 +231,19 @@
             });
         });
     </script>
+<script>
+
+    function showTableD(event) {
+        event.preventDefault(); // Evita que el formulario se envíe
+
+        // Obtiene las fechas del formulario
+        var fechaInicio = document.getElementById('fechaInicioP').value;
+        var fechaFinal = document.getElementById('fechaFinalP').value;
+
+        // Aquí podrías hacer una petición AJAX para obtener los datos basados en las fechas
+
+        // Muestra la tabla
+        document.getElementById('tablaVentasP').classList.remove('hidden');
+    }
+</script>
 </html>

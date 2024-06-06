@@ -31,6 +31,17 @@ CREATE TABLE `categorys`
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `lists`
+(
+    `list_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Lista',
+    `list_name` varchar(32) COMMENT 'Nombre de la Lista',
+    `description` varchar(180) COMMENT 'Descripción de la Lista',
+    `privacity` boolean COMMENT 'Privacidad de la Lista (true/false)',
+    `image` blob COMMENT 'Imagen de la lista',
+    `user_id` int COMMENT 'ID del Usuario dueño de la Lista',
+    FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
+);
+
 CREATE TABLE `products`
 (
     `product_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto',
@@ -44,79 +55,32 @@ CREATE TABLE `products`
     `image2` mediumblob COMMENT 'Imagen 2 relacionada con el Producto',
     `image3` mediumblob COMMENT 'Imagen 3 relacionada con el Producto',
     `video` mediumblob COMMENT 'Video relacionado con el Producto',
-    -- `category_id` int COMMENT 'ID de la Categoría a la que pertenece el Producto',
+    `is_active` tinyint(1) DEFAULT 1 COMMENT 'Indicador de activación del Producto',
+    `category_id` int COMMENT 'ID de la Categoría a la que pertenece el Producto',
     `seller_id` int COMMENT 'ID del Usuario que vende el Producto',
     `admin_approval_id` int COMMENT 'ID del Administrador que aprobó el Producto',
 	FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`),
-    FOREIGN KEY (`admin_approval_id`) REFERENCES `users` (`user_id`)
+    FOREIGN KEY (`admin_approval_id`) REFERENCES `users` (`user_id`),
+    FOREIGN KEY (`category_id`) REFERENCES `categorys` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `product_categorys`
+CREATE TABLE shopping_cart
 (
-    `product_category_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID Categoria del producto',
-    `product_id` Int COMMENT 'Producto al que pertenece la categoria',
-    `category_id` Int COMMENT 'ID Categoria',
-    FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`),
-    FOREIGN KEY (`category_id`) REFERENCES `categorys`(`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE Metodo_Pago
-(
-ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de cada Método de Pago',
-Metodo varchar(50) COMMENT 'Nombre o tipo de Método de Pago',
-Total float COMMENT 'Monto total asociado al Método de Pago'
+    `shoppingCart_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto en el Carrito',
+    `quantity` int COMMENT 'Cantidad en el Carrito',
+    `product_id` int COMMENT 'ID del Producto relacionado con el Carrito',
+    `user_id` int COMMENT 'ID del Usuario dueño del Carrito',
+    FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 );
 
-CREATE TABLE Reseñas
+CREATE TABLE `lists_products`
 (
-    ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Reseña',
-    Valoracion Int COMMENT 'Valoración de la Reseña',
-    Comentario varchar(255) COMMENT 'Comentario de la Reseña',
-    ID_Usuario int COMMENT 'ID del Usuario que escribió la Reseña',
-    ID_Producto int COMMENT 'ID del Producto al que se refiere la Reseña',
-    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID),
-    FOREIGN KEY (ID_Producto) REFERENCES Productos (ID)
-);
-
-CREATE TABLE Listas
-(
-    ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Lista',
-    Nombre varchar(255) COMMENT 'Nombre de la Lista',
-    Descripcion varchar(255) COMMENT 'Descripción de la Lista',
-    Privacidad boolean COMMENT 'Privacidad de la Lista (true/false)',
-    imagen blob COMMENT 'Imagen de la lista',
-    ID_Usuario int COMMENT 'ID del Usuario dueño de la Lista',
-    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
-);
-
-CREATE TABLE Productos_Lista
-(
-    ID int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto en la Lista',
-    ID_Producto int COMMENT 'ID del Producto relacionado con la Lista',
-    ID_Lista int COMMENT 'ID de la Lista a la que pertenece el Producto',
-    FOREIGN KEY (ID_Producto) REFERENCES Productos (ID),
-    FOREIGN KEY (ID_Lista) REFERENCES Listas (ID)
-);
-
--- CREATE TABLE Carrito
--- (
---     ID int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Carrito',
---     ID_Usuario int COMMENT 'ID del Usuario dueño del Carrito',
---     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
--- );
-
-CREATE TABLE Productos_Carrito
-(
-    ID int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto en el Carrito',
---    Disponible boolean COMMENT 'Disponible (true/false) - Indicador de disponibilidad',
-    Cantidad int COMMENT 'Cantidad en el Carrito',
---    Unico boolean COMMENT 'Unico (true/false) - Indicador de unicidad',
-    Comprado boolean COMMENT 'Comprado (true/false) - Indicador de compra',
---    ID_Carrito int COMMENT 'ID del Carrito al que pertenece el Producto',
-    ID_Producto int COMMENT 'ID del Producto relacionado con el Carrito',
-    ID_Usuario int COMMENT 'ID del Usuario dueño del Carrito',
-    FOREIGN KEY (ID_Producto) REFERENCES Productos (ID),
-    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
+    `list_product_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto en la Lista',
+    `product_id` int COMMENT 'ID del Producto relacionado con la Lista',
+    `list_id` int COMMENT 'ID de la Lista a la que pertenece el Producto',
+    FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
+    FOREIGN KEY (`list_id`) REFERENCES `lists` (`list_id`)
 );
 
 CREATE TABLE Compras
@@ -130,6 +94,17 @@ CREATE TABLE Compras
     FOREIGN KEY (ID_MetodoPago) REFERENCES Metodo_Pago (ID),
     FOREIGN KEY (ID_Producto) REFERENCES Productos (ID),
     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
+);
+
+CREATE TABLE Reseñas
+(
+    ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Reseña',
+    Valoracion Int COMMENT 'Valoración de la Reseña',
+    Comentario varchar(255) COMMENT 'Comentario de la Reseña',
+    ID_Usuario int COMMENT 'ID del Usuario que escribió la Reseña',
+    ID_Producto int COMMENT 'ID del Producto al que se refiere la Reseña',
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID),
+    FOREIGN KEY (ID_Producto) REFERENCES Productos (ID)
 );
 
 CREATE TABLE Sala_Chat
@@ -152,6 +127,13 @@ CREATE TABLE Mensajes
     ID_Usuario int COMMENT 'ID del Usuario que envió el Mensaje',
     FOREIGN KEY (ID_Sala) REFERENCES Sala_Chat (ID),
     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
+);
+
+CREATE TABLE Metodo_Pago
+(
+ID Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de cada Método de Pago',
+Metodo varchar(50) COMMENT 'Nombre o tipo de Método de Pago',
+Total float COMMENT 'Monto total asociado al Método de Pago'
 );
 
 CREATE VIEW Diccionario_Datos AS

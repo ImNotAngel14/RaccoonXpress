@@ -8,6 +8,7 @@
     {
         // Sesion iniciada
         $user_id = $_SESSION['AUTH'];
+        $user_role = $_SESSION["ROLE"];
     }
     else
     {
@@ -46,79 +47,81 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     </head>
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
-        <?php
-            printNavbar($user_id);
-        ?>
-        <div class="container-fluid justify-content-center mt-5">
-            <!--Rated-->
-            <div class="container" id="Rated">
-                <h3 style="text-align: center;">Mejor votados</h3>
-                <div class="row row-cols-1 row-cols-md-4 g-4">
-                    <br>
-                    <?php
-                        if ($result->num_rows > 0) 
-                        {
-                            while ($row = $result->fetch_assoc())
+        <div class="container-fluid">
+            <?php
+                printNavbar($user_id,$user_role);
+            ?>
+            <div class="container-fluid justify-content-center mt-5">
+                <!--Rated-->
+                <div class="container" id="Rated">
+                    <h3 style="text-align: center;">Mejor votados</h3>
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <br>
+                        <?php
+                            if ($result->num_rows > 0) 
                             {
-                                //$product_name, $price, $image, $rating
-                                printProduct($row['product_id'] ,$row['name'], $row['price'],base64_encode($row['image1']),5);
+                                while ($row = $result->fetch_assoc())
+                                {
+                                    //$product_name, $price, $image, $rating
+                                    printProduct($row['product_id'] ,$row['name'], $row['price'],base64_encode($row['image1']),5);
+                                }
                             }
-                        }
-                        else
-                        {
-                            echo "No parece haber productos disponibles...";
-                        }
-                    ?>
+                            else
+                            {
+                                echo "No parece haber productos disponibles...";
+                            }
+                        ?>
+                    </div>
                 </div>
-            </div>
-            <!--Recomendados-->
-            <div class="container" id="Rated">
-                <h3 style="text-align: center;">Recomendados</h3>
-                <div class="row row-cols-1 row-cols-md-4 g-4">
-                    <br>
-                    <div class='col d-inline-flex justify-content-center'>
-                        <div class='card' style='width: 18rem;'>
-                            <a href='' style='color: black; text-decoration: none;'>
-                                <img src='images/ImagenPrueba.jpg' class='card-img-top' alt='' style='height: 18rem; object-fit: contain;'>
-                                <div class='card-body'>
-                                    <p class='card-text'>Nombre</p>
-                                    <h5 class='card-title'>$00.00</h5>
-                                    <div class='rate-container' style='color: #8eb35a'>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
+                <!--Recomendados-->
+                <div class="container" id="Rated">
+                    <h3 style="text-align: center;">Recomendados</h3>
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <br>
+                        <div class='col d-inline-flex justify-content-center'>
+                            <div class='card' style='width: 18rem;'>
+                                <a href='' style='color: black; text-decoration: none;'>
+                                    <img src='images/ImagenPrueba.jpg' class='card-img-top' alt='' style='height: 18rem; object-fit: contain;'>
+                                    <div class='card-body'>
+                                        <p class='card-text'>Nombre</p>
+                                        <h5 class='card-title'>$00.00</h5>
+                                        <div class='rate-container' style='color: #8eb35a'>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                        </div>
+                                        <br>
                                     </div>
-                                    <br>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--Populares-->
-            <div class="container" id="Rated">
-                <h3 style="text-align: center;">Populares</h3>
-                <div class="row row-cols-1 row-cols-md-4 g-4">
-                    <br>
-                    <div class='col d-inline-flex justify-content-center'>
-                        <div class='card' style='width: 18rem;'>
-                            <a href='' style='color: black; text-decoration: none;'>
-                                <img src='images/ImagenPrueba.jpg' class='card-img-top' alt='' style='height: 18rem; object-fit: contain;'>
-                                <div class='card-body'>
-                                    <p class='card-text'>Nombre</p>
-                                    <h5 class='card-title'>$00.00</h5>
-                                    <div class='rate-container' style='color: #8eb35a'>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
-                                        <i class='fa-solid fa-star'></i>
+                <!--Populares-->
+                <div class="container" id="Rated">
+                    <h3 style="text-align: center;">Populares</h3>
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <br>
+                        <div class='col d-inline-flex justify-content-center'>
+                            <div class='card' style='width: 18rem;'>
+                                <a href='' style='color: black; text-decoration: none;'>
+                                    <img src='images/ImagenPrueba.jpg' class='card-img-top' alt='' style='height: 18rem; object-fit: contain;'>
+                                    <div class='card-body'>
+                                        <p class='card-text'>Nombre</p>
+                                        <h5 class='card-title'>$00.00</h5>
+                                        <div class='rate-container' style='color: #8eb35a'>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                            <i class='fa-solid fa-star'></i>
+                                        </div>
+                                        <br>
                                     </div>
-                                    <br>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

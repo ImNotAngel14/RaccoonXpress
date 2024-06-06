@@ -44,13 +44,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Carrito compras</title>
+        <title>Resultados</title>
         <link rel="icon" href="images/Isotipo.png">
+        <link rel="stylesheet" type="text/css" href="css/profile.css">
         <link rel="stylesheet" type="text/css" href="css/general.css">
         <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     </head>
-    <body>
+    <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;" class="container-fluid">
         <div class="row align-items-center general_navbar py-1">
             <div class="col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block">
                 <a class="navbar-brand d-flex justify-content-center" href="#">
@@ -102,52 +103,51 @@
                 </nav>
             </div>
         </div>
-        <div class="container-fluid mt-5">
-            <div class="flex-row">
-                <h3>Carrito de compras</h3>
-                <div class="card d-flex my-2" style="flex-direction:row;">
-                    <div class="card_img">
-                        <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Nombre producto</h5>
-                        <p class="card-text">Descripción</p>
-                        <h6 class="card-text">Precio $X.00 MXN</h6>
-                        <p class="card-text"><small class="text-muted">Publica</small></p>
-                        <button class="btn btn-danger">Eliminar producto</button>
-                    </div>
+        <div class="container mt-5">
+            <div class="row text-center">
+                <h4>Nombre de lista
+                </h4>
+            </div>
+            <div class="card d-flex my-2" style="flex-direction:row;">
+                <div class="card_img">
+                    <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
                 </div>
-                <div class="card d-flex my-2" style="flex-direction:row;">
-                    <div class="card_img">
-                        <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Nombre producto</h5>
-                        <p class="card-text">Descripción</p>
-                        <h6 class="card-text">Precio $X.00 MXN</h6>
-                        <p class="card-text"><small class="text-muted">Publica</small></p>
-                        <button class="btn btn-danger">Eliminar producto</button>
-                    </div>
+                <div class="card-body">
+                    <h5 class="card-title">Nombre producto</h5>
+                    <p class="card-text">Descripción</p>
+                    <h6 class="card-text">Precio $X.00 MXN</h6>
+                    <h6 class="card-text">Cantidad: 1</h6>
                 </div>
-                <div class="card d-flex my-2" style="flex-direction:row;">
-                    <div class="card_img">
-                        <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Nombre producto</h5>
-                        <p class="card-text">Descripción</p>
-                        <h6 class="card-text">Precio $X.00 MXN</h6>
-                        <p class="card-text"><small class="text-muted">Publica</small></p>
-                        <button class="btn btn-danger">Eliminar producto</button>
-                    </div>
+            </div>
+            <div class="card d-flex my-2" style="flex-direction:row;">
+                <div class="card_img">
+                    <img src="images/ImagenPrueba.jpg" alt="..." style="height: 200px; width: 200px;">
                 </div>
-            </div> 
-            <div class="flex-row">
-                <br>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-primary">Proceder a la compra</button>
+                <div class="card-body">
+                    <h5 class="card-title">Nombre producto</h5>
+                    <p class="card-text">Descripción</p>
+                    <h6 class="card-text">Precio $X.00 MXN</h6>
+                    <h6 class="card-text">Cantidad: 1</h6>
                 </div>
-            </div>   
+            </div>
+            <!--div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class='row row-cols-1 row-cols-md-4 row-cols- g-4'>
+                    <div class='col d-inline-flex justify-content-center'>
+                        <div class='card' style='width: 18rem;'>
+                            <a href='pagina_producto.php?id=" . $row['id'] . "&user_id=" . $_SESSION['id_user'] . "' style='color: black; text-decoration: none;'>
+                                <img src='" . $row['imagen'] . "' class='card-img-top' alt='" . $row['nombre'] . "' style='height: 18rem; object-fit: contain;'>
+                                <div class='card-body'>
+                                    <p class='card-text'></p>
+                                    <h5 class='card-title'></h5>
+                                    <div class='rate-container' style='color: #ABC684'>
+                                        <i class='fa-solid fa-star'></i>
+                                    </div>
+                                    <br>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+            </div--> 
         </div>
         <br><br>
         <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
