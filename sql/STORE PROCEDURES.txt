@@ -1,0 +1,723 @@
+------------SP EDITAR PERFIL-------------
+DELIMITER $$
+
+CREATE PROCEDURE update_user(
+    IN p_user_id INT,
+    IN p_username VARCHAR(32),
+    IN p_user_password VARCHAR(32),
+    IN p_email VARCHAR(64),
+    IN p_fullname VARCHAR(255),
+    IN p_birthdate DATE,
+    IN p_gender TINYINT(1),
+    IN p_is_active TINYINT(1),
+    IN p_visibility TINYINT(1),
+    IN p_user_role TINYINT(1),
+    IN p_profile_image MEDIUMBLOB
+)
+BEGIN
+    UPDATE users
+    SET
+        username = p_username,
+        user_password = p_user_password,
+        email = p_email,
+        fullname = p_fullname,
+        birthdate = p_birthdate,
+        gender = p_gender,
+        is_active = p_is_active,
+        visibility = p_visibility,
+        user_role = p_user_role,
+        profile_image = p_profile_image
+    WHERE
+        user_id = p_user_id;
+END$$
+
+DELIMITER ;
+------------SP ELIMINAR PERFIL-------------
+
+DELIMITER $$
+
+CREATE PROCEDURE delete_user(
+    IN p_user_id INT
+)
+BEGIN
+    DELETE FROM users
+    WHERE user_id = p_user_id;
+END$$
+
+DELIMITER ;
+
+----------- TRIGGER PARA LA ELIMINACION DEL PERFIL ---------------
+
+DELIMITER $$
+
+CREATE TRIGGER before_delete_user
+BEFORE DELETE ON users
+FOR EACH ROW
+BEGIN
+    -- Eliminar registros en la tabla categorys
+    DELETE FROM categorys WHERE user_id = OLD.user_id;
+    
+    -- Eliminar registros en la tabla products
+    DELETE FROM products WHERE seller_id = OLD.user_id;
+    DELETE FROM products WHERE admin_approval_id = OLD.user_id;
+
+    -- Eliminar registros en la tabla product_categorys
+    DELETE FROM product_categorys WHERE product_id IN (SELECT product_id FROM products WHERE seller_id = OLD.user_id);
+
+    -- Eliminar registros en la tabla Reseñas
+    DELETE FROM Reseñas WHERE ID_Usuario = OLD.user_id;
+
+    -- Eliminar registros en la tabla Listas
+    DELETE FROM Listas WHERE ID_Usuario = OLD.user_id;
+
+    -- Eliminar registros en la tabla Productos_Lista
+    DELETE FROM Productos_Lista WHERE ID_Lista IN (SELECT ID FROM Listas WHERE ID_Usuario = OLD.user_id);
+
+    -- Eliminar registros en la tabla Productos_Carrito
+    DELETE FROM Productos_Carrito WHERE ID_Usuario = OLD.user_id;
+
+    -- Eliminar registros en la tabla Compras
+    DELETE FROM Compras WHERE ID_Usuario = OLD.user_id;
+
+    -- Eliminar registros en la tabla Sala_Chat
+    DELETE FROM Sala_Chat WHERE ID_Usuario1 = OLD.user_id OR ID_Usuario2 = OLD.user_id;
+
+    -- Eliminar registros en la tabla Mensajes
+    DELETE FROM Mensajes WHERE ID_Usuario = OLD.user_id;
+
+END$$
+
+DELIMITER ;
+
+----------- SP ALTA CATEGORIA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_category(
+    IN p_name VARCHAR(255),
+    IN p_description VARCHAR(255),
+    IN p_user_id INT
+)
+BEGIN
+    INSERT INTO categorys (name, description, user_id)
+    VALUES (p_name, p_description, p_user_id);
+END$$
+
+DELIMITER ;
+----------- SP CAMBIO CATEGORIA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE update_category(
+    IN p_category_id INT,
+    IN p_name VARCHAR(255),
+    IN p_description VARCHAR(255)
+)
+BEGIN
+    UPDATE categorys
+    SET name = p_name,
+        description = p_description
+    WHERE category_id = p_category_id;
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA CATEGORIA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE delete_category(
+    IN p_category_id INT
+)
+BEGIN
+    DELETE FROM categorys
+    WHERE category_id = p_category_id;
+END$$
+
+DELIMITER ;
+----------- SP ALTA PRODUCTO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_product(
+    IN p_name VARCHAR(255),
+    IN p_description VARCHAR(255),
+    IN p_quotable TINYINT,
+    IN p_price FLOAT,
+    IN p_quantity INT,
+    IN p_approved BOOLEAN,
+    IN p_image1 MEDIUMBLOB,
+    IN p_image2 MEDIUMBLOB,
+    IN p_image3 MEDIUMBLOB,
+    IN p_video MEDIUMBLOB,
+    IN p_seller_id INT,
+    IN p_admin_approval_id INT
+)
+BEGIN
+    INSERT INTO products (name, description, quotable, price, quantity, approved, image1, image2, image3, video, seller_id, admin_approval_id)
+    VALUES (p_name, p_description, p_quotable, p_price, p_quantity, p_approved, p_image1, p_image2, p_image3, p_video, p_seller_id, p_admin_approval_id);
+END$$
+
+DELIMITER ;
+----------- SP CAMBIO PRODUCTO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE update_product(
+    IN p_product_id INT,
+    IN p_name VARCHAR(255),
+    IN p_description VARCHAR(255),
+    IN p_price FLOAT,
+    IN p_quantity INT,
+    IN p_approved BOOLEAN,
+    IN p_image1 MEDIUMBLOB,
+    IN p_image2 MEDIUMBLOB,
+    IN p_image3 MEDIUMBLOB,
+    IN p_video MEDIUMBLOB
+)
+BEGIN
+    UPDATE products
+    SET 
+        name = p_name,
+        description = p_description,
+        price = p_price,
+        quantity = p_quantity,
+        approved = p_approved,
+        image1 = p_image1,
+        image2 = p_image2,
+        image3 = p_image3,
+        video = p_video
+    WHERE product_id = p_product_id;
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA LOGICA PRODUCTO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE soft_delete_product(
+    IN p_product_id INT
+)
+BEGIN
+    UPDATE products
+    SET is_active = 0
+    WHERE product_id = p_product_id;
+END$$
+
+DELIMITER ;
+
+
+----------- SP ALTA PRODUCTO-CATEGORIA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE add_category_to_product(
+    IN p_product_id INT,
+    IN p_category_id INT
+)
+BEGIN
+    INSERT INTO product_categorys (product_id, category_id)
+    VALUES (p_product_id, p_category_id);
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA PRODUCTO-CATEGORIA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE remove_category_from_product(
+    IN p_product_id INT,
+    IN p_category_id INT
+)
+BEGIN
+    DELETE FROM product_categorys
+    WHERE product_id = p_product_id AND category_id = p_category_id;
+END$$
+
+DELIMITER ;
+----------- SP ALTA METODO PAGO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_payment_method(
+    IN p_method VARCHAR(50),
+    IN p_total FLOAT
+)
+BEGIN
+    INSERT INTO Metodo_Pago (Metodo, Total)
+    VALUES (p_method, p_total);
+END$$
+
+DELIMITER ;
+
+----------- SP CAMBIO METODO PAGO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE update_payment_method(
+    IN p_method_id INT,
+    IN p_method VARCHAR(50),
+    IN p_total FLOAT
+)
+BEGIN
+    UPDATE Metodo_Pago
+    SET Metodo = p_method, Total = p_total
+    WHERE ID = p_method_id;
+END$$
+
+DELIMITER ;
+----------- SP BAJA METODO PAGO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE delete_payment_method(
+    IN p_method_id INT
+)
+BEGIN
+    DELETE FROM Metodo_Pago
+    WHERE ID = p_method_id;
+END$$
+
+DELIMITER ;
+----------- SP AGREGAR PRODUCTO AL CARRITO ---------------
+
+DELIMITER $$
+
+CREATE PROCEDURE add_product_to_cart(
+    IN p_quantity INT,
+    IN p_product_id INT,
+    IN p_user_id INT
+)
+BEGIN
+    INSERT INTO Productos_Carrito (Cantidad, Comprado, ID_Producto, ID_Usuario)
+    VALUES (p_quantity, FALSE, p_product_id, p_user_id);
+END$$
+
+DELIMITER ;
+
+----------- SP ACTUALIZAR CANTIDAD DE PRODUCTO AL CARRITO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE update_cart_product_quantity(
+    IN p_cart_id INT,
+    IN p_quantity INT
+)
+BEGIN
+    UPDATE Productos_Carrito
+    SET Cantidad = p_quantity
+    WHERE ID = p_cart_id;
+END$$
+
+DELIMITER ;
+
+----------- SP ELIMINAR DE PRODUCTO AL CARRITO ---------------
+DELIMITER $$
+
+CREATE PROCEDURE remove_product_from_cart(
+    IN p_cart_id INT
+)
+BEGIN
+    DELETE FROM Productos_Carrito
+    WHERE ID = p_cart_id;
+END$$
+
+DELIMITER ;
+
+----------- SP ALTA DE COMPRA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE make_purchase(
+    IN p_quantity INT,
+    IN p_product_id INT,
+    IN p_payment_method_id INT,
+    IN p_user_id INT
+)
+BEGIN
+    DECLARE purchase_id INT;
+    -- Insertar la compra
+    INSERT INTO Compras (Fecha, Cantidad, ID_Producto, ID_MetodoPago, ID_Usuario)
+    VALUES (CURRENT_TIMESTAMP(), p_quantity, p_product_id, p_payment_method_id, p_user_id);
+    -- Obtener el ID de la compra realizada
+    SELECT LAST_INSERT_ID() INTO purchase_id;
+    -- Marcar el producto como comprado
+    UPDATE Productos_Carrito
+    SET Comprado = TRUE
+    WHERE ID_Producto = p_product_id AND ID_Usuario = p_user_id;
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA DE COMPRA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE delete_purchase(
+    IN p_purchase_id INT
+)
+BEGIN
+    DELETE FROM Compras
+    WHERE ID = p_purchase_id;
+END$$
+
+DELIMITER ;
+
+----------- SP ALTA RESEÑA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_review(
+    IN p_valoracion INT,
+    IN p_comentario VARCHAR(255),
+    IN p_user_id INT,
+    IN p_product_id INT
+)
+BEGIN
+    INSERT INTO Reseñas (Valoracion, Comentario, ID_Usuario, ID_Producto)
+    VALUES (p_valoracion, p_comentario, p_user_id, p_product_id);
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA RESEÑA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE delete_review(
+    IN p_review_id INT
+)
+BEGIN
+    DELETE FROM Reseñas
+    WHERE ID = p_review_id;
+END$$
+
+DELIMITER ;
+----------- SP ALTA LISTA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_list(
+    IN p_nombre VARCHAR(255),
+    IN p_descripcion VARCHAR(255),
+    IN p_privacidad BOOLEAN,
+    IN p_imagen BLOB,
+    IN p_user_id INT
+)
+BEGIN
+    INSERT INTO Listas (Nombre, Descripcion, Privacidad, imagen, ID_Usuario)
+    VALUES (p_nombre, p_descripcion, p_privacidad, p_imagen, p_user_id);
+END$$
+
+DELIMITER ;
+----------- SP CAMBIO LISTA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE update_list(
+    IN p_list_id INT,
+    IN p_nombre VARCHAR(255),
+    IN p_descripcion VARCHAR(255),
+    IN p_privacidad BOOLEAN,
+    IN p_imagen BLOB
+)
+BEGIN
+    UPDATE Listas
+    SET Nombre = p_nombre,
+        Descripcion = p_descripcion,
+        Privacidad = p_privacidad,
+        imagen = p_imagen
+    WHERE ID = p_list_id;
+END$$
+
+DELIMITER ;
+
+
+----------- SP BAJA LISTA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE delete_list(
+    IN p_list_id INT
+)
+BEGIN
+    DELETE FROM Listas
+    WHERE ID = p_list_id;
+END$$
+
+DELIMITER ;
+
+----------- SP TRIGGER ELIMINAR LISTA ---------------
+DELIMITER $$
+CREATE TRIGGER delete_related_records
+BEFORE DELETE ON Listas
+FOR EACH ROW
+BEGIN
+    DELETE FROM Productos_Lista WHERE ID_Lista = OLD.ID;
+END$$
+DELIMITER ;
+
+----------- SP ALTA PRODUCTO LISTA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE add_product_to_list(
+    IN p_product_id INT,
+    IN p_list_id INT
+)
+BEGIN
+    INSERT INTO Productos_Lista (ID_Producto, ID_Lista)
+    VALUES (p_product_id, p_list_id);
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA PRODUCTO LISTA ---------------
+DELIMITER $$
+
+CREATE PROCEDURE remove_product_from_list(
+    IN p_product_list_id INT
+)
+BEGIN
+    DELETE FROM Productos_Lista
+    WHERE ID = p_product_list_id;
+END$$
+
+DELIMITER ;
+
+----------- SP ALTA SALA CHAT ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_chat_room(
+    IN p_user1_id INT,
+    IN p_user2_id INT,
+    IN p_product_id INT
+)
+BEGIN
+    INSERT INTO Sala_Chat (Fecha, ID_Usuario1, ID_Usuario2, ID_Producto)
+    VALUES (CURRENT_TIMESTAMP(), p_user1_id, p_user2_id, p_product_id);
+END$$
+
+DELIMITER ;
+
+----------- SP BAJA SALA CHAT ---------------
+DELIMITER $$
+
+CREATE PROCEDURE create_message(
+    IN p_message VARCHAR(255),
+    IN p_chat_id INT,
+    IN p_user_id INT
+)
+BEGIN
+    INSERT INTO Mensajes (Mensaje, ID_Sala, ID_Usuario)
+    VALUES (p_message, p_chat_id, p_user_id);
+END$$
+
+DELIMITER ;
+
+----------- SP PRODUCTOS CON FILTROS ---------------
+
+
+DELIMITER $$
+
+CREATE PROCEDURE select_products(
+    IN filter_type INT, -- Tipo de filtro: 1 - mas_vendidos, 2 - menos_vendidos, 3 - mejor_valorados, 4 - menor_valorados, 5 - mayor_precio, 6 - menor_precio
+    IN limit_count INT -- Número máximo de productos a devolver
+)
+BEGIN
+    DECLARE sql_query VARCHAR(1000);
+
+    SET sql_query = 'SELECT products.*';
+
+    IF filter_type = 1 THEN
+        SET sql_query = CONCAT(sql_query, ', COUNT(compras.ID) AS num_compras FROM products LEFT JOIN Compras ON products.product_id = Compras.ID_Producto GROUP BY products.product_id ORDER BY num_compras DESC');
+    ELSEIF filter_type = 2 THEN
+        SET sql_query = CONCAT(sql_query, ', COUNT(compras.ID) AS num_compras FROM products LEFT JOIN Compras ON products.product_id = Compras.ID_Producto GROUP BY products.product_id ORDER BY num_compras ASC');
+    ELSEIF filter_type = 3 THEN
+        SET sql_query = CONCAT(sql_query, ' FROM products INNER JOIN (SELECT ID_Producto, AVG(Valoracion) AS avg_valoracion FROM Reseñas GROUP BY ID_Producto) AS avg_resenas ON products.product_id = avg_resenas.ID_Producto ORDER BY avg_resenas.avg_valoracion DESC');
+    ELSEIF filter_type = 4 THEN
+        SET sql_query = CONCAT(sql_query, ' FROM products INNER JOIN (SELECT ID_Producto, AVG(Valoracion) AS avg_valoracion FROM Reseñas GROUP BY ID_Producto) AS avg_resenas ON products.product_id = avg_resenas.ID_Producto ORDER BY avg_resenas.avg_valoracion ASC');
+    ELSEIF filter_type = 5 THEN
+        SET sql_query = CONCAT(sql_query, ' FROM products ORDER BY products.price DESC');
+    ELSEIF filter_type = 6 THEN
+        SET sql_query = CONCAT(sql_query, ' FROM products ORDER BY products.price ASC');
+    END IF;
+
+    SET sql_query = CONCAT(sql_query, ' LIMIT ', limit_count);
+
+    PREPARE statement FROM sql_query;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+END$$
+
+DELIMITER ;
+
+----------- SP CONSULTA DE VENTAS AGRUPADAS ---------------
+DELIMITER $$
+
+CREATE PROCEDURE get_grouped_sales(IN start_date DATE, IN end_date DATE, IN seller_id INT)
+BEGIN
+    IF start_date IS NULL OR end_date IS NULL THEN
+        SELECT
+            DATE_FORMAT(c.Fecha, '%Y-%m') AS sale_month_year,
+            cat.name AS category,
+            COUNT(c.ID) AS total_sales
+        FROM
+            Compras c
+            INNER JOIN Productos p ON c.ID_Producto = p.product_id
+            LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+            LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+        WHERE
+            p.seller_id = seller_id
+        GROUP BY
+            DATE_FORMAT(c.Fecha, '%Y-%m'),
+            cat.name
+        ORDER BY
+            sale_month_year,
+            category;
+    ELSE
+        SELECT
+            DATE_FORMAT(c.Fecha, '%Y-%m') AS sale_month_year,
+            cat.name AS category,
+            COUNT(c.ID) AS total_sales
+        FROM
+            Compras c
+            INNER JOIN Productos p ON c.ID_Producto = p.product_id
+            LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+            LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+        WHERE
+            c.Fecha BETWEEN start_date AND end_date
+            AND p.seller_id = seller_id
+        GROUP BY
+            DATE_FORMAT(c.Fecha, '%Y-%m'),
+            cat.name
+        ORDER BY
+            sale_month_year,
+            category;
+    END IF;
+END $$
+
+DELIMITER ;
+
+
+----------- SP CONSULTA DE VENTAS DETALLADAS ---------------
+DELIMITER $$
+
+CREATE PROCEDURE get_detailed_sales(IN start_date DATE, IN end_date DATE, IN seller_id INT)
+BEGIN
+    IF start_date IS NULL OR end_date IS NULL THEN
+        SELECT
+            c.Fecha AS sale_date_time,
+            cat.name AS category,
+            p.name AS product,
+            IFNULL(r.Valoracion, 'No Rating') AS rating,
+            p.price AS price,
+            p.quantity AS current_stock
+        FROM
+            Compras c
+            INNER JOIN Productos p ON c.ID_Producto = p.product_id
+            LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+            LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+            LEFT JOIN Reseñas r ON p.product_id = r.ID_Producto
+        WHERE
+            p.seller_id = seller_id
+        ORDER BY
+            c.Fecha;
+    ELSE
+        SELECT
+            c.Fecha AS sale_date_time,
+            cat.name AS category,
+            p.name AS product,
+            IFNULL(r.Valoracion, 'No Rating') AS rating,
+            p.price AS price,
+            p.quantity AS current_stock
+        FROM
+            Compras c
+            INNER JOIN Productos p ON c.ID_Producto = p.product_id
+            LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+            LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+            LEFT JOIN Reseñas r ON p.product_id = r.ID_Producto
+        WHERE
+            c.Fecha BETWEEN start_date AND end_date
+            AND p.seller_id = seller_id
+        ORDER BY
+            c.Fecha;
+    END IF;
+END $$
+
+DELIMITER ;
+
+----------- SP CONSULTA DE PEDIDOS ---------------
+
+DELIMITER $$
+
+CREATE PROCEDURE get_user_purchase_details(
+    IN start_date DATE,
+    IN end_date DATE,
+    IN user_id INT
+)
+BEGIN
+    IF start_date IS NULL OR end_date IS NULL THEN
+        SELECT
+            c.Fecha AS purchase_date_time,
+            cat.name AS category,
+            p.name AS product,
+            IFNULL(r.Valoracion, 'No Rating') AS rating,
+            p.price AS price
+        FROM
+            Compras c
+            INNER JOIN Productos p ON c.ID_Producto = p.product_id
+            LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+            LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+            LEFT JOIN Reseñas r ON p.product_id = r.ID_Producto
+        WHERE
+            c.ID_Usuario = user_id
+        ORDER BY
+            c.Fecha;
+    ELSE
+        SELECT
+            c.Fecha AS purchase_date_time,
+            cat.name AS category,
+            p.name AS product,
+            IFNULL(r.Valoracion, 'No Rating') AS rating,
+            p.price AS price
+        FROM
+            Compras c
+            INNER JOIN Productos p ON c.ID_Producto = p.product_id
+            LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+            LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+            LEFT JOIN Reseñas r ON p.product_id = r.ID_Producto
+        WHERE
+            c.ID_Usuario = user_id
+            AND c.Fecha BETWEEN start_date AND end_date;
+    END IF;
+END $$
+
+DELIMITER ;
+
+----------- VIEW DE PRODUCTOS CONSULTA VENTAS ---------------
+
+CREATE VIEW current_products_with_stock AS
+SELECT
+    p.product_id,
+    p.name AS product_name,
+    p.description AS product_description,
+    p.price AS product_price,
+    p.quantity AS available_quantity,
+    cat.name AS category
+FROM
+    productos p
+    LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+    LEFT JOIN categorys cat ON pc.category_id = cat.category_id
+WHERE
+    (cat.category_id = @category_id OR @category_id IS NULL) -- Filtrar por categoría si se especifica
+    AND p.seller_id = @seller_id; -- Filtrar por ID del vendedor
+
+----------- VIEW DE PRODUCTOS CON CATEGORIA ---------------
+
+CREATE VIEW product_with_category AS
+SELECT
+    p.product_id,
+    p.name AS product_name,
+    p.description AS product_description,
+    p.quotable,
+    p.price,
+    p.quantity,
+    p.approved,
+    p.image1,
+    p.image2,
+    p.image3,
+    p.video,
+    p.seller_id,
+    p.admin_approval_id,
+    p.is_active,
+    cat.category_id,
+    cat.name AS category_name,
+    cat.description AS category_description,
+    cat.user_id AS category_creator_id
+FROM
+    products p
+    LEFT JOIN product_categorys pc ON p.product_id = pc.product_id
+    LEFT JOIN categorys cat ON pc.category_id = cat.category_id;

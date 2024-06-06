@@ -31,6 +31,17 @@ CREATE TABLE `categorys`
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `lists`
+(
+    `list_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Lista',
+    `list_name` varchar(32) COMMENT 'Nombre de la Lista',
+    `description` varchar(180) COMMENT 'Descripción de la Lista',
+    `privacity` boolean COMMENT 'Privacidad de la Lista (true/false)',
+    `image` blob COMMENT 'Imagen de la lista',
+    `user_id` int COMMENT 'ID del Usuario dueño de la Lista',
+    FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
+);
+
 CREATE TABLE `products`
 (
     `product_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto',
@@ -45,20 +56,12 @@ CREATE TABLE `products`
     `image3` mediumblob COMMENT 'Imagen 3 relacionada con el Producto',
     `video` mediumblob COMMENT 'Video relacionado con el Producto',
     `is_active` tinyint(1) DEFAULT 1 COMMENT 'Indicador de activación del Producto',
-    -- `category_id` int COMMENT 'ID de la Categoría a la que pertenece el Producto',
+    `category_id` int COMMENT 'ID de la Categoría a la que pertenece el Producto',
     `seller_id` int COMMENT 'ID del Usuario que vende el Producto',
     `admin_approval_id` int COMMENT 'ID del Administrador que aprobó el Producto',
 	FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_id`),
-    FOREIGN KEY (`admin_approval_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `product_categorys`
-(
-    `product_category_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID Categoria del producto',
-    `product_id` Int COMMENT 'Producto al que pertenece la categoria',
-    `category_id` Int COMMENT 'ID Categoria',
-    FOREIGN KEY (`product_id`) REFERENCES `products`(`product_id`),
-    FOREIGN KEY (`category_id`) REFERENCES `categorys`(`category_id`)
+    FOREIGN KEY (`admin_approval_id`) REFERENCES `users` (`user_id`),
+    FOREIGN KEY (`category_id`) REFERENCES `categorys` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE shopping_cart
@@ -69,17 +72,6 @@ CREATE TABLE shopping_cart
     `user_id` int COMMENT 'ID del Usuario dueño del Carrito',
     FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-);
-
-CREATE TABLE `lists`
-(
-    `list_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Lista',
-    `list_name` varchar(32) COMMENT 'Nombre de la Lista',
-    `description` varchar(180) COMMENT 'Descripción de la Lista',
-    `privacity` boolean COMMENT 'Privacidad de la Lista (true/false)',
-    `image` blob COMMENT 'Imagen de la lista',
-    `user_id` int COMMENT 'ID del Usuario dueño de la Lista',
-    FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
 );
 
 CREATE TABLE `lists_products`
@@ -114,13 +106,6 @@ CREATE TABLE Reseñas
     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID),
     FOREIGN KEY (ID_Producto) REFERENCES Productos (ID)
 );
-
--- CREATE TABLE Carrito
--- (
---     ID int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Carrito',
---     ID_Usuario int COMMENT 'ID del Usuario dueño del Carrito',
---     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID)
--- );
 
 CREATE TABLE Sala_Chat
 (

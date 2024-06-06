@@ -8,6 +8,7 @@
     {
         // Sesion iniciada
         $user_id = $_SESSION['AUTH'];
+        $user_role = $_SESSION["ROLE"];
     }
     else
     {
@@ -48,7 +49,7 @@
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
         <div class="container-fluid">
             <?php
-                printNavbar($user_id);
+                printNavbar($user_id,$user_role);
             ?>
             <div class="container-fluid justify-content-center mt-5">
                 <!--Rated-->

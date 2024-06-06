@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 function validate()
 {
+    
     const element_password = document.getElementById('id_password');
     const element_email = document.getElementById('id_email');
     const element_username = document.getElementById('id_username');
@@ -38,6 +39,7 @@ function validate()
     let email = element_email.value;
     let username = element_username.value;
     let valid_input = true;
+    
     if(username.length < 3)
     {
         element_username.classList.add('is-invalid');
@@ -55,7 +57,7 @@ function validate()
         document.getElementById('id_username_validation').hidden = true;
     }
     
-
+    
     if(!validateEmail(email))
     {
         element_email.classList.add("is-invalid");
@@ -73,7 +75,7 @@ function validate()
         document.getElementById('id_email_validation2').hidden = true;
     }
     
-
+    
     if(!validatePassword(password))
     {
         element_password.classList.add("is-invalid");
@@ -164,6 +166,7 @@ function toBase64(file) {
 async function updateUser()
 {
     event.preventDefault();
+    
     const cEmail = document.getElementById("id_email");
     const cUsername = document.getElementById("id_username");
     const cFullname = document.getElementById("id_name");
@@ -173,6 +176,8 @@ async function updateUser()
     const cGender = document.getElementById("id_gender").value;
     const cVisbility = document.getElementById("id_visibility").checked;
     const base64Image = await toBase64(cProfileImage);
+    
+    console.log(base64Image);
     try {
         const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/updateUser.php', {
             method: 'PUT',
@@ -194,6 +199,7 @@ async function updateUser()
         const data = await response.json();
         if(data.success)
         {
+            window.location.reload();
         }
         else
         {
