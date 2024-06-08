@@ -25,6 +25,13 @@ async function newProduct()
     const base64Image2 = image2 ? await toBase64(image2) : null;
     const base64Image3 = image3 ? await toBase64(image3) : null;
     const base64Video = video ? await toBase64(video) : null;
+    // Obtener los parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Obtener el valor del parámetro 'product_id'
+    const productId = urlParams.get('product_id');
+    console.log("Product id:");
+    console.log(productId);
     try {
         const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/uploadProduct.php', {
             method: 'POST',
@@ -32,7 +39,7 @@ async function newProduct()
             'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                product_id: 0,
+                product_id: productId,
                 name: product_name,
                 description: product_description,
                 quotable,
@@ -54,6 +61,39 @@ async function newProduct()
         {  
             window.location.replace("home.php");
             console.log("Insertado.");
+            return true;
+        }
+        else
+        {
+            console.error("No se pudo registrar al producto.: ", data.error);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error al llamar a la API:', error);
+        return false;
+    }
+}
+
+async function delete_product(product_to_delete)
+{
+    try {
+        const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/deleteProduct.php', {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                product_id: product_to_delete
+            })
+        });
+        // const text = await response.text();
+        // console.log(text);
+        const data = await response.json();
+        // Actuamos en base a la respuesta de la API
+        if(data.success)
+        {  
+            window.location.replace("home.php");
+            console.log("Eliminado.");
             return true;
         }
         else

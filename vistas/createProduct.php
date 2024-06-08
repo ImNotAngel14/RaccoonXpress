@@ -31,6 +31,28 @@
     {
         db::disconnect($mysqli);
     }
+    if($_GET["product_id"] > 0)
+    {
+        try
+        {
+            $mysqli = db::connect();
+            $sql2 = "SELECT * FROM `products` WHERE product_id = ?;";
+            $stmt2 = $mysqli->prepare($sql2);
+            $stmt2->bind_param("i", $_GET["product_id"]);
+            $stmt2->execute();
+            $result2 = $stmt2->get_result();
+            $product_data = $result2->fetch_assoc();
+        }
+        catch(error)
+        {
+            echo "Error en la conexion a la base de datos: " . error;
+        }
+        finally
+        {
+            db::disconnect($mysqli);
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -61,26 +83,47 @@
         <form id="productoForm" enctype="multipart/form-data" method="POST" onsubmit="return newProduct()">
             <div class="form-group">
                 <label for="id_nombre">Nombre del Producto:</label>
-                <input type="text" id="id_nombre" name="nombre" required>
+                <input type="text" id="id_nombre" name="nombre" 
+                    <?php
+                        if($_GET["product_id"] > 0)
+                        {
+                            echo "value = '" . $product_data["name"] ."'";
+                        }
+                    ?> 
+                required>
             </div>
             <div class="form-group">
                 <label for="id_descripcion">Descripción:</label>
-                <textarea id="id_descripcion" name="descripcion" required></textarea>
+                <textarea id="id_descripcion" name="descripcion"required><?php if($_GET["product_id"] > 0){echo $product_data["description"];}?></textarea>
             </div>
             <div class="form-group">
                 <label for="id_cotizable">¿Es cotizable?</label>
                 <select id="id_cotizable" name="cotizable" required>
                     <option value="1">Cotizable</option>
-                    <option value="0">No cotizable</option>
+                    <option <?php if($_GET["product_id"] > 0) { if($product_data["quotable"] == 0) { echo "selected"; }}?> value="0">No cotizable</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="id_precio">Precio:</label>
-                <input type="number" id="id_precio" name="precio" required min="0">
+                <input type="number" id="id_precio" name="precio"
+                    <?php
+                        if($_GET["product_id"] > 0)
+                        {
+                            echo "value = '" . $product_data["price"] ."'";
+                        }
+                    ?>
+                required step="0.01" min="0">
             </div>
             <div class="form-group">
                 <label for="id_cantidad">Cantidad:</label>
-                <input type="number" id="id_cantidad" name="cantidad" required min="0">
+                <input type="number" id="id_cantidad" name="cantidad" 
+                    <?php
+                        if($_GET["product_id"] > 0)
+                        {
+                            echo "value = '" . $product_data["quantity"] ."'";
+                        }
+                    ?>
+                required min="0">
             </div>
             <div class="form-group">
                 <label for="id_imagen1">Imagen 1:</label>
@@ -107,14 +150,47 @@
                     {
                         while ($row = $result->fetch_assoc())
                         {
-                            echo "<option value=".$row['category_id'].">".$row['name']."</option>";
+                            if($_GET["product_id"] > 0)
+                            {
+                                if($product_data["category_id"] == $row['category_id'])
+                                {
+                                    echo "<option selected value=".$row['category_id'].">".$row['name']."</option>";
+                                }
+                                else
+                                {
+                                    echo "<option value=".$row['category_id'].">".$row['name']."</option>";
+                                }
+                            }
+                            else
+                            {
+                                echo "<option value=".$row['category_id'].">".$row['name']."</option>";
+                            }
+                            
                         }
                     }
                     ?>
                 </select>
             </div>
             <br/>
-            <button type="submit">Guardar Producto</button>
+            <button type="submit">
+                <?php
+                    if($_GET["product_id"] > 0)
+                    {
+                        echo "Actualizar producto";
+                    }
+                    else
+                    {
+                        echo "Guardar producto";
+                    }
+                ?>
+            </button>
+            <?php
+                if($_GET["product_id"] > 0)
+                {
+                    echo "<button id='id_delete_product' class='btn btn-danger' onclick='delete_product(" . $_GET["product_id"] .")'>Eliminar producto</button>";
+                }
+            ?>
+            
         </form>
     </div>
 <script src="js/createProduct.js"></script>

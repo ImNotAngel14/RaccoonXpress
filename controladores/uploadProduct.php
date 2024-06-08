@@ -60,7 +60,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             `image3` = ?,
             `video` = ?,
             `category_id` = ?,
-            `seller_id` = ?,
+            `seller_id` = ?
         WHERE
             `product_id` = ?
         ;";

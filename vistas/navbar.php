@@ -69,6 +69,10 @@ function printNavbar($user_id, $user_role)
                                         <li class='nav-item' id='id_categorys'>
                                             <a class='nav-link' aria-current='page' href='createCategory.php'>Categorias</a>
                                         </li>
+
+                                        <li class='nav-item' id='id_chats'>
+                                            <a class='nav-link' aria-current='page' href='chat.php'>Cotizaciones</a>
+                                        </li>
                                     ";
                                     break;
                                 case 2:

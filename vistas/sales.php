@@ -1,44 +1,21 @@
-<!--?php
-    include "conexion.php";
-    session_start(); // Inicia la sesión si no está iniciada
-    $main_color = "#729740";
-    #           = "#8eb35a";
-    if(isset($_GET["search"]))
+<?php
+    include "../configuracion/bd_config.php";
+    include "productTemplate.php";
+    include "navbar.php";
+    session_start();
+    // Verificamos la sesion del usuario
+    if(isset($_SESSION['AUTH']))
     {
-        $busqueda = $_GET["search"];
-        $sql = "SELECT id, nombre, imagen, precio, rate FROM producto WHERE nombre LIKE '%$busqueda%';";
-        $result = $conexion->query($sql);
+        // Sesion iniciada
+        $user_id = $_SESSION['AUTH'];
+        $user_role = $_SESSION["ROLE"];
     }
     else
     {
-        $busqueda = "";
-        $sql = "SELECT id, nombre, imagen, precio, rate FROM producto WHERE nombre LIKE '%$busqueda%';";
-        $result = $conexion->query($sql); 
+        // No hay sesion iniciada.
+        header("Location: ./vistas/landing_page.php");
     }
-    // Realizar la consulta a la base de datos
-    
-
-    if (isset($_SESSION['id_user'])) {
-        $id_user = $_SESSION['id_user'];
-
-        // Obtener el nombre del usuario desde la base de datos (asumiendo que tienes una tabla de usuarios relacionada con productos)
-        $query = "SELECT firstname FROM users WHERE id_user = '$id_user'";
-        $user_result = $conexion->query($query);
-
-        if ($user_result) {
-            $user_data = $user_result->fetch_assoc();
-            $nombre_usuario = $user_data['firstname'];
-        } else {
-            // Manejo de errores, puedes personalizar según tus necesidades
-            echo "Error en la consulta de usuario: " . $conexion->error;
-        }
-    }
-    
-
-    // Cerrar la conexión
-    $conexion->close();
-?-->
-
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,62 +29,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
         <style>
             .hidden {
-              display: none;
+                display: none;
             }
-          </style>
+        </style>
     </head>
     <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;" class="container-fluid">
-        <div class="row align-items-center general_navbar py-1">
-            <div class="col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block">
-                <a class="navbar-brand d-flex justify-content-center" href="#">
-                    <img src="images/Imagotipo.png" alt="" height="30 rem">
-                </a>
-            </div>
-            <div class="col-md-8 col-8">
-                <form class="" method="get" action="resultado.php">
-                    <div class="input-group">
-                        <input class="form-control" type="search" placeholder="Buscar..." aria-label="Search" id="id_search" name="search">
-                        <div class="input-group-append">
-                            <button id="id_navbar_search" class="btn" type="submit" style="background-color: white; border-left: white; border-color: #ced4da;">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-12">
-                <nav class="navbar navbar-expand-md navbar-light ">
-                    <div class="container-fluid justify-content-center">
-                        <div class="flex-row">
-                            <button class="navbar-toggler col" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Perfil</a>
-                                    </li>
-        
-                                    <li class="nav-item">
-                                        <a class="nav-link" aria-current="page" href="#">Mis compras</a>
-                                    </li>
-        
-                                    <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Mis listas</a>
-                                    </li>
-        
-                                    <li class="nav-item" id="chatbotfacil">
-                                        <a class="nav-link" aria-current="page" href="#">Carrito de compras</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
+        <?php
+            printNavbar($user_id,$user_role);
+        ?>
         <div class=" container mt-5 justify-content-center text-center">
             <h3>Consulta de ventas</h3>
             <hr>
@@ -124,37 +53,37 @@
 
             <table id="tablaVentasD" class="table hidden">
                 <thead>
-                  <tr>
-                    <th scope="row">#</th>
-                    <th scope="col">Fecha y Hora</th>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Calificacion</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Existencia actual</th>
-                  </tr>
+                    <tr>
+                        <th scope="row">#</th>
+                        <th scope="col">Fecha y Hora</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Calificacion</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Existencia actual</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>2024-01-01</th>
-                    <td>nombre cat</th>
-                    <td>nombre prod</th>
-                    <td>100 likes</th>
-                    <td>$100</th>
-                    <td>100</th>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>2024-01-01</th>
-                    <td>nombre cat</th>
-                    <td>nombre prod</th>
-                    <td>100 likes</th>
-                    <td>$100</th>
-                    <td>100</th>
-                  </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>2024-01-01</th>
+                        <td>nombre cat</th>
+                        <td>nombre prod</th>
+                        <td>100 likes</th>
+                        <td>$100</th>
+                        <td>100</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>2024-01-01</th>
+                        <td>nombre cat</th>
+                        <td>nombre prod</th>
+                        <td>100 likes</th>
+                        <td>$100</th>
+                        <td>100</th>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
         </div>
         <div class="container mt-5">
             <form id="form" onsubmit="showTableA(event)">
@@ -176,18 +105,18 @@
                 </thead>
                 <tbody>
                     <tr>
-                      <th scope="row">1</th>
-                      <td>01-2024</th>
-                      <td>nombre cat</th>
-                      <td>100</th>
+                        <th scope="row">1</th>
+                        <td>01-2024</th>
+                        <td>nombre cat</th>
+                        <td>100</th>
                     </tr>
                     <tr>
-                      <th scope="row">2</th>
-                      <td>01-2024</th>
-                      <td>nombre cat</th>
-                      <td>100</th>
+                        <th scope="row">2</th>
+                        <td>01-2024</th>
+                        <td>nombre cat</th>
+                        <td>100</th>
                     </tr>
-                  </tbody>
+                </tbody>
             </table>
         </div>
         <div class="container mt-5">
