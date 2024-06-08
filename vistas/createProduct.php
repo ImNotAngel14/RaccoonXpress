@@ -58,7 +58,7 @@
     ?>
     <div class="container col-4">
         <h2>Crear Nuevo Producto</h2>
-        <form id="productoForm" enctype="multipart/form-data" method="POST" onsubmit="return validate()">
+        <form id="productoForm" enctype="multipart/form-data" method="POST" onsubmit="return newProduct()">
             <div class="form-group">
                 <label for="id_nombre">Nombre del Producto:</label>
                 <input type="text" id="id_nombre" name="nombre" required>

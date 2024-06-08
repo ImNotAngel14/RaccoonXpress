@@ -63,7 +63,7 @@ function printNavbar($user_id, $user_role)
                                         </li>
             
                                         <li class='nav-item' id='id_sell'>
-                                            <a class='nav-link' aria-current='page' href='createProduct.php'>Vender</a>
+                                            <a class='nav-link' aria-current='page' href='createProduct.php?product_id=0'>Vender</a>
                                         </li>
             
                                         <li class='nav-item' id='id_categorys'>

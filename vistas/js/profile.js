@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const button = document.getElementById('id_sign_off');
     button.addEventListener('click', function() {
+        localStorage.removeItem("user_id");
         window.location.replace("./logout.php");
     });
     const deleteButton = document.getElementById('id_btn_delete_user');

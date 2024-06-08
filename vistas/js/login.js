@@ -16,6 +16,7 @@ async function authLogin()
         if(data.success)
         {
             console.log("success");
+            localStorage.setItem("user_id", data.user_id);
             window.location.replace("../index.php");
             return true;
             
