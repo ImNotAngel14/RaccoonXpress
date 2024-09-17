@@ -91,8 +91,7 @@
                                     
                                     //echo "data:image/png;base64," . base64_encode($row['profile_image']);
                                     echo isset($row['profile_image']) ?
-                                    "data:image/png;base64," . base64_encode($row['profile_image']) : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
-                                    <input type="file" id="id_input_img" style="display:none;" onchange="previewImg()" accept="image/*">
+                                    "data:image/png;base64," . $row['profile_image'] : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
                                     <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
                                 </label>
                             </div>
@@ -221,7 +220,7 @@
                 </div>
                 <div class="form-group">
                     <label for="id_gender"></label>
-                    <select class="dato" id="id_gender" name="name_genre" required>
+                    <select class="dato" id="id_gender" name="name_gender" required>
                         <option disabled selected>Género</option>
                         <option value='0' class='opcion' <?php if(!$row['gender']) echo "selected";?>>Femenino</option>
                         <option value='1' class='opcion' <?php if($row['gender']) echo "selected";?>>Masculino</option>

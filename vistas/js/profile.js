@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const deleteButton = document.getElementById('id_btn_delete_user');
     deleteButton.addEventListener('click', async function() {
         try {
-            const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/deleteUser.php', {
+            const response = await fetch('../controladores/deleteUser.php', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -163,6 +163,15 @@ function toBase64(file) {
     });
 }
 
+async function loadImg()
+{
+    const cImage = document.getElementById("id_input_img").files[0];
+    const prevImage = document.getElementById("id_profile_img");
+    const base64Image = await toBase64(cImage);
+    prevImage.src = base64Image;
+    return;
+}
+
 async function updateUser()
 {
     event.preventDefault();
@@ -179,7 +188,7 @@ async function updateUser()
     
     console.log(base64Image);
     try {
-        const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/updateUser.php', {
+        const response = await fetch('../controladores/updateUser.php', {
             method: 'PUT',
             headers: {
             'Content-Type': 'application/json'
