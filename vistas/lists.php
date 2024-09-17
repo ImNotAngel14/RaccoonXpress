@@ -103,7 +103,7 @@ try
                                     echo "
                                         <div class='card d-flex my-2' style='flex-direction:row;'>
                                             <div class='card_img'>
-                                                <img src='data:image/png;base64,". $row["image"] ."' alt='...' style='height: 200px; width: 200px;'>
+                                                <img src='data:image/png;base64,". base64_encode($row["image"]) ."' alt='...' style='height: 200px; width: 200px;'>
                                             </div>
                                             <div class='card-body'>
                                                 <h5 class='card-title'>".$row["list_name"]."</h5>

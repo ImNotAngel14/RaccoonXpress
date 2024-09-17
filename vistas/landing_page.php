@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
-    <div class="row align-items-center general_navbar py-1">
+    <!--div class="row align-items-center general_navbar py-1">
         <div class="col-0 col-md-2  d-none d-md-block d-lg-block d-xl-block">
             <a class="navbar-brand d-flex justify-content-center" href="#">
                 <img src="images/Imagotipo.png" alt="" height="30 rem">
@@ -60,7 +60,7 @@
                 </div>
             </nav>
         </div>
-    </div>
+    </div-->
     <header>
         <h1>¡Bienvenido!</h1>
         <p>Explora nuestro contenido increíble y descubre más.</p>

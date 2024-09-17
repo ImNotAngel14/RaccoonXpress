@@ -103,7 +103,12 @@
             <div class="my-2">
                 <div class="d-flex flex-row justify-content-center">
                     <div class="col-sm-2">
-                        <img src='' class='rounded img-thumbnail' style='width: 100px; height: 100px; object-fit:cover;'>
+                        <div class="w-100">
+                            <img src='data:image/png;base64, <?php echo base64_encode($product_data['image2']); ?>' class='rounded img-thumbnail' style='width: 100px; height: 100px; object-fit:cover;'>
+                        </div>
+                        <div class="w-100">
+                            <img src='data:image/png;base64, <?php echo base64_encode($product_data['image3']); ?>' class='rounded img-thumbnail' style='width: 100px; height: 100px; object-fit:cover;'>
+                        </div>
                     </div>
                     <div class="col-sm-4 d-flex align-items-center">
                         <div class='image'>

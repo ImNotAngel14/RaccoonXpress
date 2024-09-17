@@ -1,0 +1,13 @@
+17.09.2024.01
+Mis compras no tiene fijado el navbar
+Mis ventas no tiene fijado el navbar
+Crear categorias no tiene fijado el navbar
+Agregar elementos en carrito de compras
+Agregar elementos en mis listas
+Agregar elementos en mis compras
+Agregar elementos en mis ventas
+LandingPage no tiene navbar
+ShoppingCart agrega el simbolo $ al precio
+Home agrega el simbolo $ al precio
+Busqueda ya tiene los 5 parametros
+Perfil de vendedor tiene navbar

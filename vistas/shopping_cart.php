@@ -105,7 +105,7 @@
                                     <div class='card-body'>
                                         <h5 class='card-title'>". $row['product_name'] ."</h5>
                                         <input type='number' class='form-control' name='cantidad' min='1' max='' value='". $row['quantity']  ."' style='border: 1px solid #333;'>
-                                        <h6 class='card-text'>". $row['product_price'] ." MXN</h6>
+                                        <h6 class='card-text'>$". $row['product_price'] ." MXN</h6>
                                         <button data-cart-item='". $row['shoppingCart_id'] ."' class='btn btn-danger btn-delete-item'>Eliminar producto</button>
                                     </div>
                                 </div>
