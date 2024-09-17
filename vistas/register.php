@@ -70,8 +70,8 @@
                                 <input type="date" class="dato" id="id_birthdate" name="name_birthdate" placeholder="Fecha de Nacimiento " required>
                             </div>
                             <div class="form-group">
-                                <label for="id_genre"></label>
-                                <select class="dato" id="id_genre" name="name_genre" required>
+                                <label for="id_gender"></label>
+                                <select class="dato" id="id_gender" name="name_gender" required>
                                     <option disabled selected>Género</option>
                                     <option value="0" class="opcion">Femenino</option>
                                     <option value="1" class="opcion">Masculino</option>

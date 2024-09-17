@@ -31,17 +31,6 @@ CREATE TABLE `categorys`
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `lists`
-(
-    `list_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Lista',
-    `list_name` varchar(32) COMMENT 'Nombre de la Lista',
-    `description` varchar(180) COMMENT 'Descripción de la Lista',
-    `privacity` boolean COMMENT 'Privacidad de la Lista (true/false)',
-    `image` blob COMMENT 'Imagen de la lista',
-    `user_id` int COMMENT 'ID del Usuario dueño de la Lista',
-    FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
-);
-
 CREATE TABLE `products`
 (
     `product_id` Int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID del Producto',
@@ -63,6 +52,19 @@ CREATE TABLE `products`
     FOREIGN KEY (`admin_approval_id`) REFERENCES `users` (`user_id`),
     FOREIGN KEY (`category_id`) REFERENCES `categorys` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `lists`
+(
+    `list_id` int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID de la Lista',
+    `list_name` varchar(32) COMMENT 'Nombre de la Lista',
+    `description` varchar(180) COMMENT 'Descripción de la Lista',
+    `privacity` boolean COMMENT 'Privacidad de la Lista (true/false)',
+    `image` blob COMMENT 'Imagen de la lista',
+    `user_id` int COMMENT 'ID del Usuario dueño de la Lista',
+    FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`)
+);
+
+
 
 CREATE TABLE shopping_cart
 (

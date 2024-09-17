@@ -139,7 +139,7 @@ async function registerUser()
     const cName = document.getElementById("id_name");
     const cLastName = document.getElementById("id_lastname");
     const cBirthdate = document.getElementById("id_birthdate").value;
-    const cGender = document.getElementById("id_genre").value;
+    const cGender = document.getElementById("id_gender").value;
     const cRole = document.getElementById("id_role").value;
     const cImage = document.getElementById("id_input_img").files[0];
     const base64Image = await toBase64(cImage);

@@ -91,7 +91,7 @@
                                     
                                     //echo "data:image/png;base64," . base64_encode($row['profile_image']);
                                     echo isset($row['profile_image']) ?
-                                    "data:image/png;base64," . $row['profile_image'] : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
+                                    "data:image/png;base64," . base64_encode($row['profile_image']) : "images/Profile.bmp";?>" alt="" style="height: 200px; width: 200px; object-fit: cover;border-radius: 50%;">
                                     <input type="file" id="id_input_img" style="display:none;" onchange="previewImg()" accept="image/*">
                                     <p id="id_file_validation" style="color: red;" hidden>Ingrese una imagen para su perfil.</p>
                                 </label>

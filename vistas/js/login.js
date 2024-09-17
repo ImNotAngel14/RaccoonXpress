@@ -4,7 +4,7 @@ async function authLogin()
     const cUsername = document.getElementById("username").value;
     const cPassword = document.getElementById("password").value;
     try {
-        const response = await fetch('http://localhost/WebDeCapaIntermedia/controladores/authLogin.php', {
+        const response = await fetch('../controladores/authLogin.php', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
