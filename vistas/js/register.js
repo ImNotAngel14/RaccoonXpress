@@ -60,7 +60,6 @@ function validate()
         document.getElementById('id_pass_validation').hidden = true;
         element_password.classList.remove("is-invalid");
     }
-    
     if(valid_input)
     {
         var saved = registerUser();
@@ -143,6 +142,7 @@ async function registerUser()
     const cRole = document.getElementById("id_role").value;
     const cImage = document.getElementById("id_input_img").files[0];
     const base64Image = await toBase64(cImage);
+    console.log(cGender);
     //console.log(base64Image);
     var authResult = false;
     let xhr = new XMLHttpRequest();
@@ -154,10 +154,11 @@ async function registerUser()
         name: cName.value,
         lastname: cLastName.value,
         birthdate: cBirthdate,
-        gender: cGender,
+        gender: parseInt(cGender),
         role: cRole,
         profileImage: base64Image.substring(22)
     };
+
     xhr.open("POST", "../controladores/registerUser.php", true);
     xhr.onreadystatechange = function () 
     {
@@ -171,7 +172,7 @@ async function registerUser()
                     authResult = false;
                     return;
                 }
-                alert("Para finalizar tu registro completo es necesario que ingreses a tu cuenta, seccion de direcciones y agregues una dirección");
+                alert("Registrado correctamente.");
                 window.location.replace("./login.php");
                 authResult = true;
             }
